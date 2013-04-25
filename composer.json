@@ -1,0 +1,11 @@
+{
+    "require": {
+        "symfony/console": "2.3.*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "MODX": "src/"
+        }
+    }
+}
