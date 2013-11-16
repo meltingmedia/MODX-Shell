@@ -1,13 +1,6 @@
 <?php namespace MODX\Command;
 
-//use Symfony\Component\Console\Command\Command as Command;
-
-//use Symfony\Component\Console\Input\InputInterface;
-//use Symfony\Component\Console\Input\InputOption;
-//use Symfony\Component\Console\Output\OutputInterface;
-//use Symfony\Component\Console\Output\ConsoleOutput;
-//use Symfony\Component\Console\Formatter\OutputFormatter;
-
+use MODX\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
 {
+    const MODX = false;
 
     /**
      * The input interface implementation.
@@ -107,6 +101,20 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
         return parent::run($input, $output);
     }
 
+    protected function init()
+    {
+        $c = get_called_class();
+        if ($c::MODX) {
+            $loaded = $this->getMODX();
+            if (!$loaded) {
+                $this->error('Sorry, seems like MODX is not accessible here...');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Execute the console command.
      *
@@ -117,6 +125,11 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->init()) {
+            $this->error('Unable to init the command!');
+            return;
+        }
+
         return $this->process();
     }
 
@@ -319,9 +332,28 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @return \modX
      */
+//    public function getMODX()
+//    {
+//        return $this->modx;
+//    }
+
+
     public function getMODX()
     {
+        if (!($this->modx instanceof \modX)) {
+            $this->setMODX();
+        }
+
         return $this->modx;
+    }
+
+    protected function setMODX()
+    {
+        $application = $this->getApplication();
+        if ($application instanceof Application) {
+            /* @var $application Application */
+            $this->modx = $application->getMODX();
+        }
     }
 
     /**
@@ -330,8 +362,8 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * @param  \modX $modx
      * @return void
      */
-    public function setMODX($modx)
-    {
-        $this->modx = $modx;
-    }
+//    public function setMODX($modx)
+//    {
+//        $this->modx = $modx;
+//    }
 }

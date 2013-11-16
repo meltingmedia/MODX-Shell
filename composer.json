@@ -18,7 +18,7 @@
         "symfony/finder": "dev-master"
     },
     "minimum-stability": "dev",
-    "bin": ["bin/cmphelper"],
+    "bin": ["bin/modx"],
     "config": {
         "preferred-install": "dist"
     },

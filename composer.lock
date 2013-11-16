@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "3331d12934ea7bf4b8821b584cf7d0e3a7f393f9"
+                "reference": "846e8fa8fdb5fab85cdb053b26687dd073c33051"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/3331d12934ea7bf4b8821b584cf7d0e3a7f393f9",
-                "reference": "3331d12934ea7bf4b8821b584cf7d0e3a7f393f9",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/846e8fa8fdb5fab85cdb053b26687dd073c33051",
+                "reference": "846e8fa8fdb5fab85cdb053b26687dd073c33051",
                 "shasum": ""
             },
             "require": {
@@ -56,7 +56,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-09 16:01:15"
+            "time": "2013-11-13 21:30:16"
         },
         {
             "name": "symfony/finder",
