@@ -82,11 +82,18 @@ class Application extends BaseApp
      */
     protected function loadExtraCommands(array &$commands = array())
     {
-        $configFile = dirname(__DIR__) .'/config/config.php';
+        $configFile = __DIR__ .'/config/config.php';
         if (file_exists($configFile)) {
+
+            // Check if modX is available
+            $modx = $this->getMODX();
+
             $extras = include $configFile;
             foreach ($extras as $class) {
-                $commands[] = new $class();
+                // Prevent commands which requires modX to be displayed if modX is not available
+                if (defined("{$class}::MODX") && (!$class::MODX || $modx)) {
+                    $commands[] = new $class();
+                }
             }
         }
     }

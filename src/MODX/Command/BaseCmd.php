@@ -8,6 +8,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
 {
+    /**
+     * Define whether or not a modX instance is required to run the command
+     */
     const MODX = false;
 
     /**

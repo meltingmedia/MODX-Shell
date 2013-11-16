@@ -3,8 +3,50 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b948645f2b213779109318bb7c4515c2",
+    "hash": "f87d6daf583a884fe5b94424e7edaa4c",
     "packages": [
+        {
+            "name": "meltingmedia/CmpHelper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@git.melting-media.com:meltinglab/cmphelper.git",
+                "reference": "86f467f6710829c48ab582fb52f408a76ac51378"
+            },
+            "require": {
+                "modx/shell": "dev-rebuild",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "CmpHelper": "src/"
+                }
+            },
+            "scripts": {
+                "post-update-cmd": [
+                    "CmpHelper\\RegisterCommands::run"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Romain Tripault",
+                    "email": "romain@melting-media.com",
+                    "homepage": "http://melting-media.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Some tools to help you build your MODX components",
+            "keywords": [
+                "CMP",
+                "MODX",
+                "component"
+            ],
+            "time": "2013-11-16 21:43:10"
+        },
         {
             "name": "symfony/console",
             "version": "dev-master",
@@ -163,7 +205,8 @@
     "stability-flags": {
         "symfony/console": 20,
         "symfony/process": 20,
-        "symfony/finder": 20
+        "symfony/finder": 20,
+        "meltingmedia/cmphelper": 20
     },
     "platform": {
         "php": ">=5.3.3"

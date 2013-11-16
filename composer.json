@@ -1,4 +1,8 @@
 {
+    "repositories": [{
+        "type": "composer",
+        "url": "https://composer.melting-media.com"
+    }],
     "name": "MODX/Shell",
     "description": "MODX CLI",
     "keywords": ["MODX", "shell", "sh"],
@@ -15,7 +19,13 @@
         "php": ">=5.3.3",
         "symfony/console": "dev-master",
         "symfony/process": "dev-master",
-        "symfony/finder": "dev-master"
+        "symfony/finder": "dev-master",
+        "meltingmedia/cmphelper": "dev-master"
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "CmpHelper\\RegisterCommands::run"
+        ]
     },
     "minimum-stability": "dev",
     "bin": ["bin/modx"],
