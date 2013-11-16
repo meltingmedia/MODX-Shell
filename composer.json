@@ -1,5 +1,5 @@
 {
-    "name": "MODX Shell",
+    "name": "MODX/Shell",
     "description": "MODX CLI",
     "keywords": ["MODX", "shell", "sh"],
     "license": "MIT",
