@@ -1,14 +1,14 @@
-<?php namespace MODX\Command\System;
+<?php namespace MODX\Command\System\Log;
 
 use MODX\Command\ProcessorCmd;
 
-class LogClear extends ProcessorCmd
+class Clear extends ProcessorCmd
 {
     protected $processor = 'system/errorlog/clear';
 
     protected $defaultOptions = array();
 
-    protected $name = 'system:clearlog';
+    protected $name = 'system:log:clear';
     protected $description = 'Clears MODX error log';
 
     protected function processResponse(array $response = array())

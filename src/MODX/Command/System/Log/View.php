@@ -1,14 +1,14 @@
-<?php namespace MODX\Command\System;
+<?php namespace MODX\Command\System\Log;
 
 use MODX\Command\ProcessorCmd;
 
-class LogView extends ProcessorCmd
+class View extends ProcessorCmd
 {
     protected $processor = 'system/errorlog/get';
 
     protected $defaultOptions = array();
 
-    protected $name = 'system:viewlog';
+    protected $name = 'system:log:view';
     protected $description = 'Read MODX error log';
 
     protected function processResponse(array $response = array())
