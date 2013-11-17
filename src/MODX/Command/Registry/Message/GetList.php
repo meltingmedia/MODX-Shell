@@ -4,8 +4,6 @@ use MODX\Command\ProcessorCmd;
 
 class GetList extends ProcessorCmd
 {
-    const MODX = true;
-
     protected $headers = array(
         'id', 'topic', 'created', 'valid'
     );
