@@ -28,9 +28,12 @@
         ]
     },
     "minimum-stability": "dev",
-    "bin": ["bin/modx"],
+    "bin": [
+        "bin/modx"
+    ],
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "bin-dir": "bin/"
     },
     "autoload": {
         "psr-0": {

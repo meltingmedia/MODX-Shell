@@ -11,22 +11,17 @@
             "source": {
                 "type": "git",
                 "url": "git@git.melting-media.com:meltinglab/cmphelper.git",
-                "reference": "86f467f6710829c48ab582fb52f408a76ac51378"
+                "reference": "e437a4896d11af6ba8db8078f2d9542529b4b538"
             },
             "require": {
-                "modx/shell": "dev-rebuild",
-                "php": ">=5.3.2"
+                "modx/shell": "dev-master",
+                "php": ">=5.3.3"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "CmpHelper": "src/"
                 }
-            },
-            "scripts": {
-                "post-update-cmd": [
-                    "CmpHelper\\RegisterCommands::run"
-                ]
             },
             "license": [
                 "MIT"
@@ -45,7 +40,7 @@
                 "MODX",
                 "component"
             ],
-            "time": "2013-11-16 21:43:10"
+            "time": "2013-11-17 09:01:09"
         },
         {
             "name": "symfony/console",
