@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f87d6daf583a884fe5b94424e7edaa4c",
+    "hash": "5af928b63d03e65cf410695e3ce00fb4",
     "packages": [
         {
             "name": "meltingmedia/CmpHelper",

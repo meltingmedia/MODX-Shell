@@ -13,6 +13,8 @@ class GetList extends ProcessorCmd
 
     protected function process()
     {
+        $this->handleColumns();
+
         /** @var \Symfony\Component\Console\Helper\TableHelper $table */
         $table = $this->getApplication()->getHelperSet()->get('table');
         $table->setHeaders($this->headers);
@@ -30,5 +32,10 @@ class GetList extends ProcessorCmd
         }
 
         $table->render($this->output);
+    }
+
+    protected function formatQueue($value)
+    {
+        return $this->renderObject('registry.db.modDbRegisterQueue', $value, 'name');
     }
 }
