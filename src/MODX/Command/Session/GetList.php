@@ -42,7 +42,7 @@ class GetList extends ProcessorCmd
 
     protected function getUser($session)
     {
-        $value = 'Anonymous';
+        $value = 'Anonymous (?)';
 
         $c = $this->modx->newQuery('modUserProfile');
         $c->where(array(
