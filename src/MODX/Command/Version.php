@@ -1,5 +1,8 @@
 <?php namespace MODX\Command;
 
+/**
+ * Get the current modX instance version
+ */
 class Version extends BaseCmd
 {
     const MODX = true;

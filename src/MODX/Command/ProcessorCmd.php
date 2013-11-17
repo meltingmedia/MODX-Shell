@@ -2,20 +2,42 @@
 
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * A processor based command
+ */
 abstract class ProcessorCmd extends BaseCmd
 {
     const MODX = true;
 
+    /**
+     * A processor path
+     *
+     * @var string
+     */
     protected $processor;
 
     protected $defaultsOptions = array();
     protected $defaultsProperties = array();
 
+    /**
+     * An array of columns to be used in tables output
+     *
+     * @var array
+     */
     protected $headers = array();
 
+    /**
+     * An array of required arguments to be set as processor properties (parameters)
+     *
+     * @var array
+     */
     protected $required = array();
 
-    /** @var \modProcessorResponse */
+    /**
+     * The processor response
+     *
+     * @var \modProcessorResponse
+     */
     protected $response;
 
     protected function process()
@@ -36,12 +58,16 @@ abstract class ProcessorCmd extends BaseCmd
                 $properties[$field] = $this->argument($field);
             }
         }
+
+        // Allow "on the fly" columns addition/removal
         $this->handleColumns();
 
+        // Allow the command to break if some criteria aren't met
         if ($this->beforeRun($properties, $options) === false) {
             return $this->info('Operation aborted');
         }
 
+        // @todo some TLC with processors errors/success
         /** @var \modProcessorResponse $response */
         $response = $this->modx->runProcessor($this->processor, $properties, $options);
         if (!($response instanceof \modProcessorResponse) || !$response->getResponse()) {
@@ -51,10 +77,8 @@ abstract class ProcessorCmd extends BaseCmd
         if ($response->isError()) {
             $errors = $response->getFieldErrors();
             foreach ($errors as $e) {
-                //$this->error(print_r($e, true));
                 $this->error($e->field .' : '. $e->message);
             }
-            //$this->info(print_r(, true));
             return;
         }
         $this->response =& $response;
@@ -62,16 +86,35 @@ abstract class ProcessorCmd extends BaseCmd
         return $this->processResponse($this->decodeResponse($response));
     }
 
+    /**
+     * Command result logic
+     *
+     * @param array $response
+     */
     protected function processResponse(array $response = array())
     {
         $this->info('Override me to process the processor response');
     }
 
+    /**
+     *
+     * @param array $properties The properties which will be sent to the processor
+     * @param array $options The options which will be sent to the processor
+     *
+     * @return mixed Return false here to break the command execution
+     */
     protected function beforeRun(array &$properties = array(), array &$options = array())
     {
 
     }
 
+    /**
+     * Decode the processor response if json encoded
+     *
+     * @param \modProcessorResponse $response
+     *
+     * @return array|mixed
+     */
     protected function decodeResponse(\modProcessorResponse &$response)
     {
         $results = $response->getResponse();
@@ -133,9 +176,14 @@ abstract class ProcessorCmd extends BaseCmd
         );
     }
 
-    // Tables related
+// Tables related
+// @todo find a cleaner way to handle this ? since all processors do not make use of tables
 
-
+    /**
+     * Allow "on the fly" table columns addition/removal
+     *
+     * @return void
+     */
     protected function handleColumns()
     {
         // Support columns "removal"
@@ -163,6 +211,13 @@ abstract class ProcessorCmd extends BaseCmd
         }
     }
 
+    /**
+     * Grab the appropriate columns for the given record
+     *
+     * @param array $record
+     *
+     * @return array Usable row for the table output
+     */
     protected function processRow(array $record = array())
     {
         $result = array();
@@ -178,6 +233,14 @@ abstract class ProcessorCmd extends BaseCmd
         return $result;
     }
 
+    /**
+     * Allow raw values to be "formatted"
+     *
+     * @param mixed $value
+     * @param string $column
+     *
+     * @return mixed
+     */
     protected function parseValue($value, $column)
     {
         $method = 'format'. ucfirst($column);
@@ -188,6 +251,12 @@ abstract class ProcessorCmd extends BaseCmd
         return $value;
     }
 
+    /**
+     *
+     * @param string $value
+     *
+     * @return string
+     */
     protected function renderBoolean($value)
     {
         $result = 'No';
@@ -198,6 +267,15 @@ abstract class ProcessorCmd extends BaseCmd
         return $result;
     }
 
+    /**
+     * Retrieve a column value for the given object
+     *
+     * @param string $class The object class
+     * @param mixed $pk The primary key or criteria to grab the object
+     * @param string $column The desired column value
+     *
+     * @return mixed Either the column value if found, or the given primary key
+     */
     protected function renderObject($class, $pk, $column)
     {
         if ($pk && $pk != '0') {

@@ -1,6 +1,8 @@
 <?php namespace MODX\Command;
 
-
+/**
+ * Command to help display an object as a table (mostly fot get* processors)
+ */
 abstract class GetProcessor extends ProcessorCmd
 {
     protected $headers = array(

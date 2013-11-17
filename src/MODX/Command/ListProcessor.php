@@ -1,5 +1,8 @@
 <?php namespace MODX\Command;
 
+/**
+ * Command to deal with list processors (ie. getlist)
+ */
 abstract class ListProcessor extends ProcessorCmd
 {
     protected $headers = array(
@@ -23,6 +26,7 @@ abstract class ListProcessor extends ProcessorCmd
         $table->render($this->output);
 
         // Footer
+        // @todo: make this configurable
         /** @var \Symfony\Component\Console\Helper\TableHelper $t */
         $t = $this->getApplication()->getHelperSet()->get('table');
         $t->setHeaders(array('', ''));

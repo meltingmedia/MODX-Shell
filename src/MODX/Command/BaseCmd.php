@@ -6,6 +6,9 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * A base command
+ */
 abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
 {
     /**
@@ -41,9 +44,19 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      */
     protected $description;
 
+    /**
+     * Command help
+     * @todo allow advanced output (using a method ?)
+     *
+     * @var string
+     */
     protected $help = '';
 
-    /** @var \modX */
+    /**
+     * A modX instance
+     *
+     * @var \modX
+     */
     protected $modx;
 
     /**
@@ -54,12 +67,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
     public function __construct()
     {
         parent::__construct($this->name);
-
-        // We will go ahead and set the name, description, and parameters on console
-        // commands just to make things a little easier on the developer. This is
-        // so they don't have to all be manually specified in the constructors.
         $this->setDescription($this->description);
-
         $this->specifyParameters();
 
         if ($this->help && !empty($this->help)) {
@@ -74,16 +82,11 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      */
     protected function specifyParameters()
     {
-        // We will loop through all of the arguments and options for the command and
-        // set them all on the base command instance. This specifies what can get
-        // passed into these commands as "parameters" to control the execution.
-        foreach ($this->getArguments() as $arguments)
-        {
+        foreach ($this->getArguments() as $arguments) {
             call_user_func_array(array($this, 'addArgument'), $arguments);
         }
 
-        foreach ($this->getOptions() as $options)
-        {
+        foreach ($this->getOptions() as $options) {
             call_user_func_array(array($this, 'addOption'), $options);
         }
     }
@@ -93,17 +96,22 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     *
      * @return integer
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
-
         $this->output = $output;
 
         return parent::run($input, $output);
     }
 
+    /**
+     * Required actions to be performed before execution
+     *
+     * @return bool Whether or not required actions went successfully
+     */
     protected function init()
     {
         $c = get_called_class();
@@ -129,13 +137,15 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$this->init()) {
-            $this->error('Unable to init the command!');
-            return;
+            return $this->error('Unable to init the command!');
         }
 
         return $this->process();
     }
 
+    /**
+     * The real command logic to override
+     */
     protected function process()
     {
         $this->error('Please override process() method!');
@@ -146,12 +156,12 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @param  string  $command
      * @param  array   $arguments
+     *
      * @return integer
      */
     public function call($command, array $arguments = array())
     {
         $instance = $this->getApplication()->find($command);
-
         $arguments['command'] = $command;
 
         return $instance->run(new ArrayInput($arguments), $this->output);
@@ -162,12 +172,12 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @param  string  $command
      * @param  array   $arguments
+     *
      * @return integer
      */
     public function callSilent($command, array $arguments = array())
     {
         $instance = $this->getApplication()->find($command);
-
         $arguments['command'] = $command;
 
         return $instance->run(new ArrayInput($arguments), new NullOutput);
@@ -177,11 +187,14 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Get the value of a command argument.
      *
      * @param  string  $key
+     *
      * @return string|array
      */
     public function argument($key = null)
     {
-        if (is_null($key)) return $this->input->getArguments();
+        if (is_null($key)) {
+            return $this->input->getArguments();
+        }
 
         return $this->input->getArgument($key);
     }
@@ -190,11 +203,14 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Get the value of a command option.
      *
      * @param  string  $key
+     *
      * @return string|array
      */
     public function option($key = null)
     {
-        if (is_null($key)) return $this->input->getOptions();
+        if (is_null($key)) {
+            return $this->input->getOptions();
+        }
 
         return $this->input->getOption($key);
     }
@@ -204,6 +220,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @param  string  $question
      * @param  bool    $default
+     *
      * @return bool
      */
     public function confirm($question, $default = true)
@@ -219,6 +236,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @param  string  $question
      * @param  string  $default
+     *
      * @return string
      */
     public function ask($question, $default = null)
@@ -235,6 +253,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @param  string  $question
      * @param  bool    $fallback
+     *
      * @return string
      */
     public function secret($question, $fallback = true)
@@ -249,6 +268,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Write a string as standard output.
      *
      * @param  string  $string
+     *
      * @return void
      */
     public function line($string)
@@ -260,6 +280,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Write a string as information output.
      *
      * @param  string  $string
+     *
      * @return void
      */
     public function info($string)
@@ -271,6 +292,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Write a string as comment output.
      *
      * @param  string  $string
+     *
      * @return void
      */
     public function comment($string)
@@ -282,6 +304,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Write a string as question output.
      *
      * @param  string  $string
+     *
      * @return void
      */
     public function question($string)
@@ -293,6 +316,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Write a string as error output.
      *
      * @param  string  $string
+     *
      * @return void
      */
     public function error($string)
@@ -340,7 +364,11 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
 //        return $this->modx;
 //    }
 
-
+    /**
+     * Try to get a modX instance
+     *
+     * @return \modX|null
+     */
     public function getMODX()
     {
         if (!($this->modx instanceof \modX)) {
@@ -350,6 +378,11 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
         return $this->modx;
     }
 
+    /**
+     * Try to set a modX instance
+     *
+     * @return void
+     */
     protected function setMODX()
     {
         $application = $this->getApplication();
@@ -363,6 +396,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Set the MODX application instance.
      *
      * @param  \modX $modx
+     *
      * @return void
      */
 //    public function setMODX($modx)
