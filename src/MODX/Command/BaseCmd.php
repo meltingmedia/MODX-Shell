@@ -75,6 +75,20 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
         }
     }
 
+
+
+    /**
+     * Gets the application instance for this command.
+     *
+     * @return \MODX\Application An Application instance
+     *
+     * @api
+     */
+    public function getApplication()
+    {
+        return parent::getApplication();
+    }
+
     /**
      * Specify the arguments and options on the command.
      *

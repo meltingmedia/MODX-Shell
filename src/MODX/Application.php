@@ -219,8 +219,15 @@ class Application extends BaseApp
     {
         //$path = '/home/romain/.cmphelper/test.ini';
         $path = getenv('HOME') . '/.cmphelper/config.ini';
+        //$path = __DIR__ . '/config/config.ini';
+        //echo $path ."\n";
 
         return $path;
+    }
+
+    public function getExtraCommandsConfig()
+    {
+        return __DIR__ .'/config/extraCommands.php';
     }
 
     /**
@@ -248,7 +255,7 @@ class Application extends BaseApp
      * @return bool Whether or not the write succeed
      */
     public function writeConfig(array $data) {
-        $content = "; This is CmpHelper configuration file \n\n";
+        $content = "; This is MODX Shell configuration file \n\n";
         $path = $this->getConfigFile();
 
         foreach ($data as $cmp => $config) {
