@@ -396,4 +396,37 @@ class Application extends BaseApp
 
         return null;
     }
+
+    /**
+     * Try to load a service class
+     *
+     * @param string $name The service name
+     *
+     * @return null|object The instantiated service class if found
+     */
+    public function getService($name = '')
+    {
+        $this->getMODX();
+
+        if (!$name) {
+            $name = $this->getCurrentInstanceName();
+        }
+        if (!$name) {
+            return null;
+        }
+        $lower = strtolower($name);
+
+        $path = $this->modx->getOption("{$lower}.core_path", null, $this->modx->getOption('core_path') . "components/{$lower}/");
+        if (file_exists($path . "model/{$lower}/{$lower}.class.php")) {
+            // First check "common" path
+            $path .= "model/{$lower}/";
+        } else if (file_exists(file_exists($path . "services/{$lower}.class.php"))) {
+            // Then check "our" path
+            $path .= "{$lower}/";
+        } else {
+            $path = null;
+        }
+
+        return $this->modx->getService($lower, $name, $path);
+    }
 }
