@@ -344,4 +344,18 @@ class Application extends BaseApp
             }
         }
     }
+
+    public function getCurrentInstancePath()
+    {
+        $path = getcwd() .'/';
+        $config = $this->getCurrentConfig();
+        foreach ($config as $name => $data) {
+            if (array_key_exists('base_path', $data)) {
+                $instancePath = $data['base_path'];
+                if (substr($path, 0, strlen($instancePath)) === $instancePath) {
+                    return $instancePath;
+                }
+            }
+        }
+    }
 }
