@@ -189,6 +189,18 @@ class Application extends BaseApp
     }
 
     /**
+     * Set an instance of modX for this application
+     *
+     * @param \modX $modx
+     *
+     * @return void
+     */
+    public function setMODX(\modX &$modx)
+    {
+        $this->modx = $modx;
+    }
+
+    /**
      * Get the current working dir with trailing slash
      *
      * @return string|bool
