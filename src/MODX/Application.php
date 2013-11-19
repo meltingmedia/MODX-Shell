@@ -164,10 +164,7 @@ class Application extends BaseApp
     {
         if (null === $this->modx) {
             $config = $this->getCurrentConfig();
-            $currentPath = getcwd();
-            if (substr($currentPath, -1) !== '/') {
-                $currentPath .= '/';
-            }
+            $currentPath = $this->getCwd();
             // First search in current dir
             $coreConfig = file_exists('./config.core.php') ? './config.core.php' : false;
             if (!$coreConfig) {
@@ -188,6 +185,21 @@ class Application extends BaseApp
         }
 
         return $this->modx;
+    }
+
+    /**
+     * Get the current working dir with trailing slash
+     *
+     * @return string|bool
+     */
+    public function getCwd()
+    {
+        $path = getcwd();
+        if ($path && substr($path, -1) !== '/') {
+            $path .= '/';
+        }
+
+        return $path;
     }
 
     /**
@@ -259,6 +271,11 @@ class Application extends BaseApp
         return $this->config;
     }
 
+    /**
+     * Refresh the configuration file
+     *
+     * @return void
+     */
     protected function readConfigFile()
     {
         $config = $this->getConfigFile();
@@ -313,6 +330,13 @@ class Application extends BaseApp
         return $result;
     }
 
+    /**
+     * Get the given instance configuration details
+     *
+     * @param string $name The optional instance name (defaulting to the current one)
+     *
+     * @return mixed Either an array of details if details are found, or null
+     */
     public function getInstanceDetail($name = '')
     {
         if (empty($name)) {
@@ -331,9 +355,14 @@ class Application extends BaseApp
         return;
     }
 
+    /**
+     * Iterate through the configured instances to find the instance name we are "in"
+     *
+     * @return null|string Either the instance name if found, or null
+     */
     public function getCurrentInstanceName()
     {
-        $path = getcwd() .'/';
+        $path = $this->getCwd();
         $config = $this->getCurrentConfig();
         foreach ($config as $name => $data) {
             if (array_key_exists('base_path', $data)) {
@@ -343,11 +372,18 @@ class Application extends BaseApp
                 }
             }
         }
+
+        return null;
     }
 
+    /**
+     * Iterate through the configured instances to find the base path of the instance we are "in"
+     *
+     * @return string|null Either the base path if found, or null
+     */
     public function getCurrentInstancePath()
     {
-        $path = getcwd() .'/';
+        $path = $this->getCwd();
         $config = $this->getCurrentConfig();
         foreach ($config as $name => $data) {
             if (array_key_exists('base_path', $data)) {
@@ -357,5 +393,7 @@ class Application extends BaseApp
                 }
             }
         }
+
+        return null;
     }
 }

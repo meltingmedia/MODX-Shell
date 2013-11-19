@@ -19,7 +19,7 @@ class GetList extends BaseCmd
         if (empty($config)) {
             return $this->error('No configuration file found');
         }
-        $currentDir = getcwd() . '/';
+        $currentDir = $this->getApplication()->getCwd();
 
 
         /** @var \Symfony\Component\Console\Helper\TableHelper $table */
