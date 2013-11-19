@@ -20,7 +20,7 @@ class Add extends BaseCmd
                 'path',
                 InputArgument::OPTIONAL,
                 'Your component base path, defaults to current dir',
-                $this->getApplication()->getCwd(),
+                getcwd(),
             ),
             array(
                 'erase',
