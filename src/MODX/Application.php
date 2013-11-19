@@ -21,6 +21,9 @@ class Application extends BaseApp
         parent::__construct('MODX Shell', self::VERSION);
     }
 
+    /**
+     * @return \Symfony\Component\Console\Command\Command[]
+     */
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
@@ -67,6 +70,13 @@ class Application extends BaseApp
         }
     }
 
+    /**
+     * Generate a command class name from a file
+     *
+     * @param \Symfony\Component\Finder\SplFileInfo $file
+     *
+     * @return string
+     */
     protected function getCommandClass(\Symfony\Component\Finder\SplFileInfo &$file)
     {
         $name = rtrim($file->getRelativePathname(), '.php');
@@ -82,7 +92,7 @@ class Application extends BaseApp
      */
     protected function loadExtraCommands(array &$commands = array())
     {
-        $configFile = __DIR__ .'/config/config.php';
+        $configFile = $this->getExtraCommandsConfig();
         if (file_exists($configFile)) {
 
             // Check if modX is available
@@ -225,6 +235,11 @@ class Application extends BaseApp
         return $path;
     }
 
+    /**
+     * Get the extra commands configuration file path
+     *
+     * @return string
+     */
     public function getExtraCommandsConfig()
     {
         return __DIR__ .'/config/extraCommands.php';
@@ -238,13 +253,18 @@ class Application extends BaseApp
     public function getCurrentConfig()
     {
         if (empty($this->config)) {
-            $config = $this->getConfigFile();
-            if (file_exists($config)) {
-                $this->config = parse_ini_file($config, true);
-            }
+            $this->readConfigFile();
         }
 
         return $this->config;
+    }
+
+    protected function readConfigFile()
+    {
+        $config = $this->getConfigFile();
+        if (file_exists($config)) {
+            $this->config = parse_ini_file($config, true);
+        }
     }
 
     /**
@@ -285,6 +305,43 @@ class Application extends BaseApp
             }
         }
 
-        return (file_put_contents($path, $content) !== false);
+        $result = (file_put_contents($path, $content) !== false);
+        if ($result) {
+            $this->readConfigFile();
+        }
+
+        return $result;
+    }
+
+    public function getInstanceDetail($name = '')
+    {
+        if (empty($name)) {
+            $name = $this->getCurrentInstanceName();
+        }
+
+        if (empty($name)) {
+            return;
+        }
+
+        $config = $this->getCurrentConfig();
+        if (array_key_exists($name, $config)) {
+            return $config[$name];
+        }
+
+        return;
+    }
+
+    public function getCurrentInstanceName()
+    {
+        $path = getcwd() .'/';
+        $config = $this->getCurrentConfig();
+        foreach ($config as $name => $data) {
+            if (array_key_exists('base_path', $data)) {
+                $instancePath = $data['base_path'];
+                if (substr($path, 0, strlen($instancePath)) === $instancePath) {
+                    return $name;
+                }
+            }
+        }
     }
 }
