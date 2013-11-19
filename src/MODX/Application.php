@@ -134,9 +134,10 @@ class Application extends BaseApp
                 $cmpCommands = array();
                 //$cmpCommands = $config['commands'];
 
-                $loaded = $this->modx->getService($lower, $service, $path, $params);
+                //$loaded = $this->modx->getService($lower, $service, $path, $params);
+                $loaded = $this->getService($service, $params);
                 if (!$loaded) {
-                    echo 'Unable to load service class '.$service.' from '. $path ."\n";
+                    //echo 'Unable to load service class '.$service.' from '. $path ."\n";
                     continue;
                 }
 
@@ -401,14 +402,15 @@ class Application extends BaseApp
      * Try to load a service class
      *
      * @param string $name The service name
+     * @param array $params Some parameters to construct the service class
      *
      * @return null|object The instantiated service class if found
      */
-    public function getService($name = '')
+    public function getService($name = '', $params = array())
     {
         $this->getMODX();
 
-        if (!$name) {
+        if (empty($name)) {
             $name = $this->getCurrentInstanceName();
         }
         if (!$name) {
@@ -417,16 +419,18 @@ class Application extends BaseApp
         $lower = strtolower($name);
 
         $path = $this->modx->getOption("{$lower}.core_path", null, $this->modx->getOption('core_path') . "components/{$lower}/");
-        if (file_exists($path . "model/{$lower}/{$lower}.class.php")) {
+        $classFile = "{$lower}.class.php";
+        if (file_exists($path . "model/{$lower}/{$classFile}")) {
             // First check "common" path
             $path .= "model/{$lower}/";
-        } else if (file_exists(file_exists($path . "services/{$lower}.class.php"))) {
+        } else if (file_exists($path . "services/{$classFile}")) {
             // Then check "our" path
-            $path .= "{$lower}/";
+            $path .= 'services/';
         } else {
+            // Assume it's a modX base service
             $path = null;
         }
 
-        return $this->modx->getService($lower, $name, $path);
+        return $this->modx->getService($lower, $name, $path, $params);
     }
 }
