@@ -11,7 +11,7 @@
             "source": {
                 "type": "git",
                 "url": "git@git.melting-media.com:meltinglab/cmphelper.git",
-                "reference": "64f2c9d101b0ea684637398991d0afe8b57d07b7"
+                "reference": "04bcd38472358a40ae949bac4b50e067d64945fa"
             },
             "require": {
                 "modx/shell": "dev-master",
@@ -40,7 +40,7 @@
                 "MODX",
                 "component"
             ],
-            "time": "2013-11-19 13:47:22"
+            "time": "2013-11-19 21:00:46"
         },
         {
             "name": "symfony/console",

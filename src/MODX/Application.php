@@ -125,7 +125,7 @@ class Application extends BaseApp
                 $service = $config['service'];
                 $lower = strtolower($service);
 
-                $path = $config['service_path'];
+                //$path = $config['service_path'];
 
                 $params = array();
                 if (array_key_exists('params', $config)) {
