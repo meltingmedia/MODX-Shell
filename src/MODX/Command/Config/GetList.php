@@ -34,8 +34,10 @@ class GetList extends BaseCmd
         $idx = 1;
 
         foreach ($config as $name => $data) {
-            $separator = ' - ';
+            //$separator = ' - ';
+            $separator = '   ';
             if ($this->isCurrent($currentDir, $data)) {
+                //$separator = ' <info>></info> ';
                 $separator = ' > ';
             }
 

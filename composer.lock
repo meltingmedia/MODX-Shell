@@ -49,12 +49,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "846e8fa8fdb5fab85cdb053b26687dd073c33051"
+                "reference": "62a18a52e66662bc4bf1edf0b9916b97caad3418"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/846e8fa8fdb5fab85cdb053b26687dd073c33051",
-                "reference": "846e8fa8fdb5fab85cdb053b26687dd073c33051",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/62a18a52e66662bc4bf1edf0b9916b97caad3418",
+                "reference": "62a18a52e66662bc4bf1edf0b9916b97caad3418",
                 "shasum": ""
             },
             "require": {
@@ -69,7 +69,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -93,7 +93,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-13 21:30:16"
+            "time": "2014-01-07 15:22:10"
         },
         {
             "name": "symfony/finder",
@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "e2ce3164ab58b4d54612e630571f158035ee8603"
+                "reference": "9a267caac6298b91efc7f0bc8522fd80f48fee98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/e2ce3164ab58b4d54612e630571f158035ee8603",
-                "reference": "e2ce3164ab58b4d54612e630571f158035ee8603",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/9a267caac6298b91efc7f0bc8522fd80f48fee98",
+                "reference": "9a267caac6298b91efc7f0bc8522fd80f48fee98",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -140,7 +140,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-19 09:47:34"
+            "time": "2014-01-07 13:29:57"
         },
         {
             "name": "symfony/process",
@@ -149,12 +149,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "88ccdd7a1fb67a23fe81355c66a09d6908ebcd80"
+                "reference": "d4b086ca4d6e192d8c2c64fe011159c8bc4c9daa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/88ccdd7a1fb67a23fe81355c66a09d6908ebcd80",
-                "reference": "88ccdd7a1fb67a23fe81355c66a09d6908ebcd80",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/d4b086ca4d6e192d8c2c64fe011159c8bc4c9daa",
+                "reference": "d4b086ca4d6e192d8c2c64fe011159c8bc4c9daa",
                 "shasum": ""
             },
             "require": {
@@ -163,7 +163,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -187,7 +187,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-09 12:03:12"
+            "time": "2014-01-07 13:29:57"
         }
     ],
     "packages-dev": [
