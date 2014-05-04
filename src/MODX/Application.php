@@ -304,7 +304,8 @@ class Application extends BaseApp
      *
      * @return bool Whether or not the write succeed
      */
-    public function writeConfig(array $data) {
+    public function writeConfig(array $data)
+    {
         $content = "; This is MODX Shell configuration file \n\n";
         $path = $this->getConfigFile();
 
@@ -430,12 +431,16 @@ class Application extends BaseApp
         }
         $lower = strtolower($name);
 
-        $path = $this->modx->getOption("{$lower}.core_path", null, $this->modx->getOption('core_path') . "components/{$lower}/");
+        $path = $this->modx->getOption(
+            "{$lower}.core_path",
+            null,
+            $this->modx->getOption('core_path') . "components/{$lower}/"
+        );
         $classFile = "{$lower}.class.php";
         if (file_exists($path . "model/{$lower}/{$classFile}")) {
             // First check "common" path
             $path .= "model/{$lower}/";
-        } else if (file_exists($path . "services/{$classFile}")) {
+        } elseif (file_exists($path . "services/{$classFile}")) {
             // Then check "our" path
             $path .= 'services/';
         } else {
