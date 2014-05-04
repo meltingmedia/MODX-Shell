@@ -3,19 +3,22 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5af928b63d03e65cf410695e3ce00fb4",
+    "hash": "94e35e8efdd2609ede79193b6d9f0aa2",
     "packages": [
         {
             "name": "meltingmedia/CmpHelper",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@git.melting-media.com:meltinglab/cmphelper.git",
-                "reference": "92841cc39cd349eecb31d2ea185c57a34a319dec"
+                "url": "git@git.melting-media.com:composer/cmphelper.git",
+                "reference": "731202e0d95ce3864d21ac33380a79692db0510c"
             },
             "require": {
                 "modx/shell": "dev-master",
                 "php": ">=5.3.3"
+            },
+            "suggest": {
+                "meltingmedia/builder": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -40,7 +43,7 @@
                 "MODX",
                 "component"
             ],
-            "time": "2014-04-30 13:39:32"
+            "time": "2014-05-04 12:14:43"
         },
         {
             "name": "symfony/console",
