@@ -1,6 +1,7 @@
 <?php namespace MODX\Command\Misc;
 
 use MODX\Command\BaseCmd;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -31,8 +32,9 @@ class ListColumns extends BaseCmd
             return $this->error('Seems like it\'s not a valid object');
         }
 
-        /** @var \Symfony\Component\Console\Helper\TableHelper $table */
-        $table = $this->getApplication()->getHelperSet()->get('table');
+        /** @var \Symfony\Component\Console\Helper\Table $table */
+        //$table = $this->getApplication()->getHelperSet()->get('table');
+        $table = new Table($this->output);
         $table->setHeaders(array(
             'object', 'column', 'default value'
         ));
@@ -48,7 +50,7 @@ class ListColumns extends BaseCmd
             }
         }
 
-        $table->render($this->output);
+        $table->render();
     }
 
     /**

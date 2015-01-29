@@ -1,5 +1,7 @@
 <?php namespace MODX\Command;
 
+use Symfony\Component\Console\Helper\Table;
+
 /**
  * Command to deal with list processors (ie. getlist)
  */
@@ -15,22 +17,25 @@ abstract class ListProcessor extends ProcessorCmd
         $total = $results['total'];
         $results = $results['results'];
 
-        /** @var \Symfony\Component\Console\Helper\TableHelper $table */
-        $table = $this->getApplication()->getHelperSet()->get('table');
+        /** @var \Symfony\Component\Console\Helper\Table $table */
+        //$table = $this->getApplication()->getHelperSet()->get('table');
+        $table = new Table($this->output);
         $table->setHeaders($this->headers);
 
         foreach ($results as $row) {
             $table->addRow($this->processRow($row));
         }
 
-        $table->render($this->output);
+        $table->render();
 
         // Footer
         // @todo: make this configurable
-        /** @var \Symfony\Component\Console\Helper\TableHelper $t */
-        $t = $this->getApplication()->getHelperSet()->get('table');
+        /** @var \Symfony\Component\Console\Helper\Table $t */
+        //$t = $this->getApplication()->getHelperSet()->get('table');
+        $t = new Table($this->output);
         $t->setHeaders(array('', ''));
-        $t->setLayout($t::LAYOUT_COMPACT);
+        $t->setStyle('compact');
+        //$t->setLayout($t::LAYOUT_COMPACT);
 
         $t->setRows(array(
             array(
@@ -40,6 +45,6 @@ abstract class ListProcessor extends ProcessorCmd
             array('',''),
         ));
 
-        $t->render($this->output);
+        $t->render();
     }
 }

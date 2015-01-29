@@ -1,7 +1,8 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
     "hash": "94e35e8efdd2609ede79193b6d9f0aa2",
     "packages": [
@@ -11,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@git.melting-media.com:composer/cmphelper.git",
-                "reference": "731202e0d95ce3864d21ac33380a79692db0510c"
+                "reference": "b4565d0ed54659f90d50f7738664691381afae86"
             },
             "require": {
                 "modx/shell": "dev-master",
@@ -43,7 +44,7 @@
                 "MODX",
                 "component"
             ],
-            "time": "2014-05-04 12:14:43"
+            "time": "2014-05-04 14:16:57"
         },
         {
             "name": "symfony/console",
@@ -52,29 +53,31 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "d12686cea4e1155ed93449c0bca9db223f31bb2d"
+                "reference": "e32f0018268c297698090023a9340107f874703d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/d12686cea4e1155ed93449c0bca9db223f31bb2d",
-                "reference": "d12686cea4e1155ed93449c0bca9db223f31bb2d",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/e32f0018268c297698090023a9340107f874703d",
+                "reference": "e32f0018268c297698090023a9340107f874703d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.5.9"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/event-dispatcher": "~2.1"
+                "symfony/event-dispatcher": "~2.7|~3.0",
+                "symfony/process": "~2.7|~3.0"
             },
             "suggest": {
                 "psr/log": "For using the console logger",
-                "symfony/event-dispatcher": ""
+                "symfony/event-dispatcher": "",
+                "symfony/process": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -88,19 +91,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-28 13:26:08"
+            "time": "2015-01-25 19:10:41"
         },
         {
             "name": "symfony/finder",
@@ -109,21 +110,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "51e3af2081d8497f6552cb3338e8a40541646773"
+                "reference": "37634be207646b5f9a8f550424d1a877731d37bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/51e3af2081d8497f6552cb3338e8a40541646773",
-                "reference": "51e3af2081d8497f6552cb3338e8a40541646773",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/37634be207646b5f9a8f550424d1a877731d37bd",
+                "reference": "37634be207646b5f9a8f550424d1a877731d37bd",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.5.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -137,19 +138,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-28 05:15:04"
+            "time": "2015-01-03 08:04:30"
         },
         {
             "name": "symfony/process",
@@ -158,21 +157,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "8a3edace8e8aabed8992b993bfc13df3b1e836f2"
+                "reference": "aa3eb77cd51f7dedb903d06a7d8ac8f03b2b57fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/8a3edace8e8aabed8992b993bfc13df3b1e836f2",
-                "reference": "8a3edace8e8aabed8992b993bfc13df3b1e836f2",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/aa3eb77cd51f7dedb903d06a7d8ac8f03b2b57fc",
+                "reference": "aa3eb77cd51f7dedb903d06a7d8ac8f03b2b57fc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.5.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -186,27 +185,21 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-28 05:15:04"
+            "time": "2015-01-25 04:42:01"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "symfony/console": 20,
@@ -214,10 +207,10 @@
         "symfony/finder": 20,
         "meltingmedia/cmphelper": 20
     },
+    "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

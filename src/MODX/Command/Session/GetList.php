@@ -1,6 +1,7 @@
 <?php namespace MODX\Command\Session;
 
 use MODX\Command\ProcessorCmd;
+use Symfony\Component\Console\Helper\Table;
 
 class GetList extends ProcessorCmd
 {
@@ -15,8 +16,8 @@ class GetList extends ProcessorCmd
     {
         //$this->handleColumns();
 
-        /** @var \Symfony\Component\Console\Helper\TableHelper $table */
-        $table = $this->getApplication()->getHelperSet()->get('table');
+        /** @var \Symfony\Component\Console\Helper\Table $table */
+        $table = new Table($this->output);
         $table->setHeaders($this->headers);
 
 
@@ -37,7 +38,7 @@ class GetList extends ProcessorCmd
             $table->addRow($this->processRow($row));
         }
 
-        $table->render($this->output);
+        $table->render();
     }
 
     protected function getUser($session)

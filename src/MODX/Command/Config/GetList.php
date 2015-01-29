@@ -1,6 +1,7 @@
 <?php namespace MODX\Command\Config;
 
 use MODX\Command\BaseCmd;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * List known modx installations
@@ -22,8 +23,9 @@ class GetList extends BaseCmd
         $currentDir = $this->getApplication()->getCwd();
 
 
-        /** @var \Symfony\Component\Console\Helper\TableHelper $table */
-        $table = $this->getApplication()->getHelperSet()->get('table');
+        /** @var \Symfony\Component\Console\Helper\Table $table */
+        //$table = $this->getApplication()->getHelperSet()->get('table');
+        $table = new Table($this->output);
         //$table->setLayout($table::LAYOUT_COMPACT);
         $table->setHeaders(array(
             'Name', 'Path'/*, 'Is valid'*/
