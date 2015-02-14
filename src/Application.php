@@ -61,6 +61,7 @@ class Application extends BaseApp
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ($finder as $file) {
+            /** @var \MODX\Shell\Command\BaseCmd $className */
             $className = $this->getCommandClass($file);
 
             // Prevent commands which requires modX to be displayed if modX is not available
@@ -154,7 +155,6 @@ class Application extends BaseApp
     }
 
 
-    // @TODO refactor below (taken from CmpHelper)
 
     /**
      * Get the modX instance
@@ -256,10 +256,7 @@ class Application extends BaseApp
      */
     public function getConfigFile()
     {
-        //$path = '/home/romain/.cmphelper/test.ini';
-        $path = getenv('HOME') . '/.cmphelper/config.ini';
-        //$path = __DIR__ . '/config/config.ini';
-        //echo $path ."\n";
+        $path = getenv('HOME') . '/.modx/config.ini';
 
         return $path;
     }
@@ -271,7 +268,9 @@ class Application extends BaseApp
      */
     public function getExtraCommandsConfig()
     {
-        return __DIR__ .'/config/extraCommands.php';
+        $path = getenv('HOME') . '/.modx/extraCommands.php';
+
+        return $path;
     }
 
     /**
