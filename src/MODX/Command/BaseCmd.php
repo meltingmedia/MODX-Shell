@@ -57,7 +57,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      *
      * @var \modX
      */
-    protected $modx;
+    public $modx;
 
     /**
      * Create a new console command instance.

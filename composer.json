@@ -16,25 +16,14 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/console": "dev-master",
-        "symfony/process": "dev-master",
-        "symfony/finder": "dev-master",
-        "meltingmedia/cmphelper": "dev-master"
-    },
-    "scripts": {
-        "post-update-cmd": [
-            "CmpHelper\\RegisterCommands::run"
-        ]
+        "symfony/console": "~2.7",
+        "symfony/process": "~2.7",
+        "symfony/finder": "~2.7"
     },
     "minimum-stability": "dev",
     "bin": [
         "bin/modx"
     ],
-    "suggest": {
-        "meltingmedia/builder": "dev-master",
-        "meltingmedia/cmphelper": "dev-master"
-    },
     "config": {
         "preferred-install": "dist",
         "bin-dir": "bin/"

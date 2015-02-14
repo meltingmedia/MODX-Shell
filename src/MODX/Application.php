@@ -14,11 +14,12 @@ class Application extends BaseApp
     /**
      * @var \modX
      */
-    protected $modx;
+    public $modx;
 
     public function __construct()
     {
         parent::__construct('MODX Shell', self::VERSION);
+        $this->getMODX();
     }
 
     /**
@@ -94,7 +95,6 @@ class Application extends BaseApp
     {
         $configFile = $this->getExtraCommandsConfig();
         if (file_exists($configFile)) {
-
             // Check if modX is available
             $modx = $this->getMODX();
 
@@ -119,7 +119,6 @@ class Application extends BaseApp
             $componentsCommands = $this->modx->fromJSON($this->modx->getOption('console_commands', null, '{}'));
             //echo print_r($componentsCommands, true);
             foreach ($componentsCommands as $k => $config) {
-
                 //echo print_r($config, true);
 
                 $service = $config['service'];
@@ -147,6 +146,7 @@ class Application extends BaseApp
                 }
 
                 foreach ($cmpCommands as $c) {
+                    // @TODO: inject service ?
                     $commands[] = new $c();
                 }
             }
