@@ -83,7 +83,7 @@ abstract class CommandRegistrar
     public static function listCommands()
     {
         //$basePath = __DIR__ . '/Command';
-        $self = new \ReflectionClass(get_class(self));
+        $self = new \ReflectionClass(get_called_class());
         $basePath = $self->getFileName() . '/Command';
 
         echo $basePath;
