@@ -24,9 +24,7 @@ class GetList extends BaseCmd
 
 
         /** @var \Symfony\Component\Console\Helper\Table $table */
-        //$table = $this->getApplication()->getHelperSet()->get('table');
         $table = new Table($this->output);
-        //$table->setLayout($table::LAYOUT_COMPACT);
         $table->setHeaders(array(
             'Name', 'Path'/*, 'Is valid'*/
         ));

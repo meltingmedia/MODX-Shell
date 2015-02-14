@@ -12,14 +12,14 @@ class Edit extends Add
     {
         return array(
             array(
-                'service_class',
+                'name',
                 InputArgument::REQUIRED,
-                'Your component service class name'
+                'Your instance name'
             ),
             array(
                 'path',
                 InputArgument::OPTIONAL,
-                'Your component base path, defaults to current dir',
+                'Your instance base path, defaults to current dir',
                 getcwd(),
             ),
             array(

@@ -12,16 +12,16 @@ class Rm extends BaseCmd
     {
         return array(
             array(
-                'service_class',
+                'name',
                 InputArgument::REQUIRED,
-                'Your component service class name'
+                'Your instance name'
             ),
         );
     }
 
     protected function process()
     {
-        $service = $this->argument('service_class');
+        $service = $this->argument('name');
 
         /** @var \MODX\Shell\Application $app */
         $app = $this->getApplication();
@@ -34,7 +34,7 @@ class Rm extends BaseCmd
         unset($original[$service]);
         $this->writeConfig($original);
 
-        $this->info('Component '. $service .' removed');
+        $this->info('Instance '. $service .' removed from configuration');
     }
 
     protected function writeConfig(array $data)
