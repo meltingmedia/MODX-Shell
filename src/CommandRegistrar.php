@@ -66,9 +66,9 @@ abstract class CommandRegistrar
             $deprecated = include $deprecated;
             foreach ($deprecated as $class) {
                 $idx = array_search($class, $commands);
-                if ($idx !== false) {
-                    unset($commands[$idx]);
+                if ($idx !== false && isset($commands[$idx])) {
                     self::$io->write("Removing {$commands[$idx]}");
+                    unset($commands[$idx]);
                 }
             }
         }
