@@ -13,6 +13,7 @@ abstract class CommandRegistrar
      * @var \Composer\IO\IOInterface $io
      */
     public static $io;
+    public static $namespace = '';
     /**
      * Process the command registration
      *
@@ -24,7 +25,7 @@ abstract class CommandRegistrar
 
         $app = new Application;
         $extraFile = $app->getExtraCommandsConfig();
-        self::$io->write('<info>Editing extra commands for '.__NAMESPACE__.'...</info>');
+        self::$io->write('<info>Editing extra commands for '.self::$namespace.'...</info>');
 
         $commands = array();
         if (file_exists($extraFile)) {
@@ -81,7 +82,11 @@ abstract class CommandRegistrar
      */
     public static function listCommands()
     {
-        $basePath = __DIR__ . '/Command';
+        //$basePath = __DIR__ . '/Command';
+        $self = new \ReflectionClass(get_class(self));
+        $basePath = $self->getFileName() . '/Command';
+
+        echo $basePath;
 
         $finder = new \Symfony\Component\Finder\Finder();
         $finder->files()
@@ -125,6 +130,6 @@ abstract class CommandRegistrar
         $name = rtrim($file->getRelativePathname(), '.php');
         $name = str_replace('/', '\\', $name);
 
-        return __NAMESPACE__ . '\\Command\\' . $name;
+        return self::$namespace . '\\Command\\' . $name;
     }
 }
