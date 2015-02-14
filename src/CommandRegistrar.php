@@ -13,7 +13,7 @@ abstract class CommandRegistrar
      * @var \Composer\IO\IOInterface $io
      */
     public static $io;
-    public static $namespace = '';
+    protected static $reflection;
     /**
      * Process the command registration
      *
@@ -25,7 +25,7 @@ abstract class CommandRegistrar
 
         $app = new Application;
         $extraFile = $app->getExtraCommandsConfig();
-        self::$io->write('<info>Editing extra commands for '.self::$namespace.'...</info>');
+        self::$io->write('<info>Editing extra commands for '.self::getReflection()->getNamespaceName().'...</info>');
 
         $commands = array();
         if (file_exists($extraFile)) {
@@ -61,7 +61,7 @@ abstract class CommandRegistrar
      */
     public static function unRegister(array &$commands = array())
     {
-        $deprecated = __DIR__ .'/deprecated.php';
+        $deprecated = dirname(self::getReflection()->getFileName()) .'/deprecated.php';
         if (file_exists($deprecated)) {
             self::$io->write('<info>...looking for commands to remove...</info>');
             $deprecated = include $deprecated;
@@ -83,8 +83,7 @@ abstract class CommandRegistrar
     public static function listCommands()
     {
         //$basePath = __DIR__ . '/Command';
-        $self = new \ReflectionClass(get_called_class());
-        $basePath = $self->getFileName() . '/Command';
+        $basePath = dirname(self::getReflection()->getFileName()) . '/Command';
 
         echo $basePath;
 
@@ -130,6 +129,15 @@ abstract class CommandRegistrar
         $name = rtrim($file->getRelativePathname(), '.php');
         $name = str_replace('/', '\\', $name);
 
-        return self::$namespace . '\\Command\\' . $name;
+        return self::getReflection()->getNamespaceName() . '\\Command\\' . $name;
+    }
+
+    protected static function getReflection()
+    {
+        if (!self::$reflection) {
+            self::$reflection = new \ReflectionClass(get_called_class());
+        }
+
+        return self::$reflection;
     }
 }
