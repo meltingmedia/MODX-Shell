@@ -29,8 +29,8 @@
         "bin-dir": "bin/"
     },
     "autoload": {
-        "psr-0": {
-            "MODX": "src/"
+        "psr-4": {
+            "MODX\\Shell\\": "src/"
         }
     }
 }

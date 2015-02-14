@@ -6,7 +6,7 @@ if (PHP_SAPI !== 'cli') {
 
 require __DIR__.'/../src/bootstrap.php';
 
-use MODX\Application;
+use MODX\Shell\Application;
 
 error_reporting(-1);
 
