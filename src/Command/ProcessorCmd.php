@@ -97,6 +97,7 @@ abstract class ProcessorCmd extends BaseCmd
     }
 
     /**
+     * A Method to implement before running the processor. Return false to break the execution (ie. if some criteria arent't met)
      *
      * @param array $properties The properties which will be sent to the processor
      * @param array $options The options which will be sent to the processor
@@ -189,7 +190,6 @@ abstract class ProcessorCmd extends BaseCmd
         // Support columns "removal"
         $unset = $this->option('unset');
         if ($unset && !empty($unset)) {
-            //$this->info(print_r($unset, true));
             foreach ($unset as $k) {
                 if (in_array($k, $this->headers)) {
                     $idx = array_search($k, $this->headers);
@@ -252,6 +252,7 @@ abstract class ProcessorCmd extends BaseCmd
     }
 
     /**
+     * A "formatter" method to display booleans as "Yes/No" instead of "1/0"
      *
      * @param string $value
      *

@@ -1,6 +1,7 @@
 <?php namespace MODX\Shell\Command;
 
 use MODX\Shell\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * A base command
  */
-abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
+abstract class BaseCmd extends Command
 {
     /**
      * Define whether or not a modX instance is required to run the command
@@ -59,10 +60,9 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      */
     public $modx;
 
+
     /**
      * Create a new console command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -81,8 +81,6 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      * Gets the application instance for this command.
      *
      * @return \MODX\Shell\Application An Application instance
-     *
-     * @api
      */
     public function getApplication()
     {
@@ -128,6 +126,7 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
      */
     protected function init()
     {
+        /** @var BaseCmd $c */
         $c = get_called_class();
         if ($c::MODX) {
             $loaded = $this->getMODX();
@@ -369,16 +368,6 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
     }
 
     /**
-     * Get the MODX application instance.
-     *
-     * @return \modX
-     */
-//    public function getMODX()
-//    {
-//        return $this->modx;
-//    }
-
-    /**
      * Try to get a modX instance
      *
      * @return \modX|null
@@ -405,16 +394,4 @@ abstract class BaseCmd extends \Symfony\Component\Console\Command\Command
             $this->modx = $application->getMODX();
         }
     }
-
-    /**
-     * Set the MODX application instance.
-     *
-     * @param  \modX $modx
-     *
-     * @return void
-     */
-//    public function setMODX($modx)
-//    {
-//        $this->modx = $modx;
-//    }
 }

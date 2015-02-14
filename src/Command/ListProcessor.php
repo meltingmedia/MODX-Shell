@@ -10,15 +10,27 @@ abstract class ListProcessor extends ProcessorCmd
     protected $headers = array(
         'id', 'name', 'description'
     );
+    protected $showPagination = true;
 
     protected function processResponse(array $results = array())
     {
-        //echo print_r($results, true);
         $total = $results['total'];
         $results = $results['results'];
 
+        $this->renderBody($results);
+        if ($this->showPagination) {
+            $this->renderPagination($results, $total);
+        }
+    }
+
+    /**
+     * Render the results as a table
+     *
+     * @param array $results
+     */
+    protected function renderBody(array $results = array())
+    {
         /** @var \Symfony\Component\Console\Helper\Table $table */
-        //$table = $this->getApplication()->getHelperSet()->get('table');
         $table = new Table($this->output);
         $table->setHeaders($this->headers);
 
@@ -27,17 +39,24 @@ abstract class ListProcessor extends ProcessorCmd
         }
 
         $table->render();
+    }
 
-        // Footer
-        // @todo: make this configurable
+    /**
+     * Render the "pagination" table
+     *
+     * @param array $results
+     * @param int $total
+     *
+     * @return void
+     */
+    protected function renderPagination(array $results = array(), $total = 0)
+    {
         /** @var \Symfony\Component\Console\Helper\Table $t */
-        //$t = $this->getApplication()->getHelperSet()->get('table');
-        $t = new Table($this->output);
-        $t->setHeaders(array('', ''));
-        $t->setStyle('compact');
-        //$t->setLayout($t::LAYOUT_COMPACT);
+        $table = new Table($this->output);
+        $table->setHeaders(array('', ''));
+        $table->setStyle('compact');
 
-        $t->setRows(array(
+        $table->setRows(array(
             array(
                 'displaying '. count($results) .' item(s)',
                 'of '. $total,
@@ -45,6 +64,6 @@ abstract class ListProcessor extends ProcessorCmd
             array('',''),
         ));
 
-        $t->render();
+        $table->render();
     }
 }

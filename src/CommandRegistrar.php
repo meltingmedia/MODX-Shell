@@ -4,7 +4,7 @@ use Composer\Script\Event;
 use MODX\Shell\Application;
 
 /**
- * Sample script to self register commands in MODX Shell
+ * A simple class to implement to register third party commands
  */
 abstract class CommandRegistrar
 {
@@ -12,7 +12,11 @@ abstract class CommandRegistrar
      * @var \Composer\IO\IOInterface $io
      */
     public static $io;
+    /**
+     * @var \ReflectionClass
+     */
     protected static $reflection;
+
     /**
      * Process the command registration
      *
@@ -33,9 +37,9 @@ abstract class CommandRegistrar
             // And remove "deprecated" ones, if any
             self::unRegister($commands);
         }
+
+        // Iterate the Command folder, looking for command classes
         self::$io->write('<info>...looking for commands to register...</info>');
-
-
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach (self::listCommands() as $file) {
             $className = self::getCommandClass($file);
@@ -49,12 +53,13 @@ abstract class CommandRegistrar
         sort($commands);
         $result = self::arrayToString($commands);
 
+        // Write to extra commands configuration file
         file_put_contents($extraFile, $result);
         self::$io->write('<info>...done</info>');
     }
 
     /**
-     * Un-register previous commands, now deprecated
+     * Un-register previous commands, that are now deprecated/removed
      *
      * @param array $commands Existing commands
      */
