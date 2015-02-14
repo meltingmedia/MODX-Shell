@@ -6,7 +6,6 @@ use MODX\Shell\Application;
 /**
  * Sample script to self register commands in MODX Shell
  */
-
 abstract class CommandRegistrar
 {
     /**
@@ -25,7 +24,7 @@ abstract class CommandRegistrar
 
         $app = new Application;
         $extraFile = $app->getExtraCommandsConfig();
-        self::$io->write('<info>Editing extra commands for '.self::getReflection()->getNamespaceName().'...</info>');
+        self::$io->write('<info>Editing extra commands for '.self::getNS().'...</info>');
 
         $commands = array();
         if (file_exists($extraFile)) {
@@ -61,7 +60,7 @@ abstract class CommandRegistrar
      */
     public static function unRegister(array &$commands = array())
     {
-        $deprecated = dirname(self::getReflection()->getFileName()) .'/deprecated.php';
+        $deprecated = self::getRootPath() .'/deprecated.php';
         if (file_exists($deprecated)) {
             self::$io->write('<info>...looking for commands to remove...</info>');
             $deprecated = include $deprecated;
@@ -82,10 +81,7 @@ abstract class CommandRegistrar
      */
     public static function listCommands()
     {
-        //$basePath = __DIR__ . '/Command';
-        $basePath = dirname(self::getReflection()->getFileName()) . '/Command';
-
-        echo $basePath;
+        $basePath = self::getRootPath() . '/Command';
 
         $finder = new \Symfony\Component\Finder\Finder();
         $finder->files()
@@ -129,9 +125,24 @@ abstract class CommandRegistrar
         $name = rtrim($file->getRelativePathname(), '.php');
         $name = str_replace('/', '\\', $name);
 
-        return self::getReflection()->getNamespaceName() . '\\Command\\' . $name;
+        return self::getNS() . '\\Command\\' . $name;
     }
 
+    /**
+     * Get the namespace of the called sub class
+     *
+     * @return string
+     */
+    protected static function getNS()
+    {
+        return self::getReflection()->getNamespaceName();
+    }
+
+    /**
+     * Get a reflection of the called sub class
+     *
+     * @return \ReflectionClass
+     */
     protected static function getReflection()
     {
         if (!self::$reflection) {
@@ -139,5 +150,15 @@ abstract class CommandRegistrar
         }
 
         return self::$reflection;
+    }
+
+    /**
+     * Get the path of the called sub class
+     *
+     * @return string
+     */
+    protected static function getRootPath()
+    {
+        return dirname(self::getReflection()->getFileName());
     }
 }
