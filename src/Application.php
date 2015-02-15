@@ -259,6 +259,10 @@ class Application extends BaseApp
     {
         $path = getenv('HOME') . '/.modx/config.ini';
         if (!file_exists($path)) {
+            $base = getenv('HOME') . '/.modx/';
+            if (!file_exists($base)) {
+                mkdir($base);
+            }
             file_put_contents($path, '');
         }
 
