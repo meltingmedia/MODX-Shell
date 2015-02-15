@@ -15,7 +15,7 @@ abstract class CommandRegistrar
     /**
      * @var \ReflectionClass
      */
-    protected static $reflection;
+    protected static $reflection = null;
 
     /**
      * Process the command registration
@@ -56,6 +56,7 @@ abstract class CommandRegistrar
         // Write to extra commands configuration file
         file_put_contents($extraFile, $result);
         self::$io->write('<info>...done</info>');
+        self::$reflection = null;
     }
 
     /**
