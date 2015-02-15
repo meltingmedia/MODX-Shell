@@ -238,6 +238,7 @@ class Application extends BaseApp
             $this->modx = new \modX();
             $this->modx->initialize('mgr');
             $this->modx->getService('error', 'error.modError', '', '');
+            //$this->modx->setLogTarget('ECHO');
 
             // @todo: ability to define a user (or anything else)
 
