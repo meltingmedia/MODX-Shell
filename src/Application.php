@@ -258,6 +258,9 @@ class Application extends BaseApp
     public function getConfigFile()
     {
         $path = getenv('HOME') . '/.modx/config.ini';
+        if (!file_exists($path)) {
+            file_put_contents($path, '');
+        }
 
         return $path;
     }

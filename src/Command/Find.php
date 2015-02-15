@@ -17,7 +17,7 @@ class Find extends ListProcessor
     );
 
     protected $name = 'find';
-    protected $description = 'Search';
+    protected $description = 'Search within this MODX instance using the "uberbar" search';
 
     protected function beforeRun(array &$properties = array(), array &$options = array())
     {
