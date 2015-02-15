@@ -39,6 +39,8 @@ class GetList extends BaseCmd
             if ($this->isCurrent($currentDir, $data)) {
                 //$separator = ' <info>></info> ';
                 $separator = ' > ';
+            } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
+                $separator = ' x ';
             }
 
             $row = array(
