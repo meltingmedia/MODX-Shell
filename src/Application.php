@@ -117,7 +117,7 @@ class Application extends BaseApp
     protected function loadComponentsCommands(array & $commands = array())
     {
         if ($this->getMODX()) {
-            $componentsCommands = $this->modx->fromJSON($this->modx->getOption('console_commands', null, '{}'));
+            $componentsCommands = $this->getComponentsWithCommands();
             //echo print_r($componentsCommands, true);
             foreach ($componentsCommands as $k => $config) {
                 //echo print_r($config, true);
@@ -135,7 +135,7 @@ class Application extends BaseApp
                 //$cmpCommands = $config['commands'];
 
                 //$loaded = $this->modx->getService($lower, $service, $path, $params);
-                $loaded = $this->getService($service, $params);
+                $loaded = $this->getExtraService($config);
                 if (!$loaded) {
                     //echo 'Unable to load service class '.$service.' from '. $path ."\n";
                     continue;
@@ -152,6 +152,35 @@ class Application extends BaseApp
                 }
             }
         }
+    }
+
+    /**
+     * Get an array of registered services "adding" additional commands
+     *
+     * @return array
+     */
+    public function getComponentsWithCommands()
+    {
+        return $this->modx->fromJSON($this->modx->getOption('console_commands', null, '{}'));
+    }
+
+    /**
+     * Convenient method to load a service responsible of extra commands loading
+     *
+     * @param array $data
+     *
+     * @return null|object
+     */
+    public function getExtraService(array $data = array())
+    {
+        $service = $data['service'];
+
+        $params = array();
+        if (array_key_exists('params', $data)) {
+            $params = $data['params'];
+        }
+
+        return $this->getService($service, $params);
     }
 
 
