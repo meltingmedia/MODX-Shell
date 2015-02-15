@@ -16,6 +16,10 @@ class Components extends BaseCmd
     protected function process()
     {
         $components = $this->getApplication()->getComponentsWithCommands();
+        if (empty($components)) {
+            $this->info('No additional commands registered by components');
+            return;
+        }
         foreach ($components as $ns => $data) {
             $service = $this->getApplication()->getExtraService($data);
             if ($service && method_exists($service, 'getCommands')) {
