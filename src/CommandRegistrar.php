@@ -50,11 +50,9 @@ abstract class CommandRegistrar
             $commands[] = $className;
         }
 
-        sort($commands);
-        $result = self::arrayToString($commands);
-
         // Write to extra commands configuration file
-        file_put_contents($extraFile, $result);
+        $app->writeExtraConfig($commands);
+
         self::$io->write('<info>...done</info>');
         self::$reflection = null;
     }
@@ -96,27 +94,6 @@ abstract class CommandRegistrar
             ->name('*.php');
 
         return $finder;
-    }
-
-    /**
-     * Convert an array of commands to a string, to be usable with file_put_content
-     *
-     * @param array $data The list of commands to register
-     *
-     * @return string
-     */
-    public static function arrayToString(array $data = array())
-    {
-        $string = '<?php' . "\n\n"
-                  .'return array(' ."\n";
-
-        foreach ($data as $c) {
-            $string .= "    '{$c}',\n";
-        }
-
-        $string .= ');' ."\n";
-
-        return $string;
     }
 
     /**

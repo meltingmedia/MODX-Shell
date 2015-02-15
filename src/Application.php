@@ -94,6 +94,7 @@ class Application extends BaseApp
      */
     protected function loadExtraCommands(array &$commands = array())
     {
+        $toRemove = array();
         $configFile = $this->getExtraCommandsConfig();
         if (file_exists($configFile)) {
             // Check if modX is available
@@ -101,12 +102,80 @@ class Application extends BaseApp
 
             $extras = include $configFile;
             foreach ($extras as $class) {
+                if (!class_exists($class)) {
+                    $toRemove[] = $class;
+                    continue;
+                }
                 // Prevent commands which requires modX to be displayed if modX is not available
                 if (defined("{$class}::MODX") && (!$class::MODX || $modx)) {
                     $commands[] = new $class();
                 }
             }
+            if (!empty($toRemove)) {
+                $this->unRegisterExtraCommands($toRemove);
+            }
         }
+    }
+
+    /**
+     * Un-register the given command classes from the extra commands
+     *
+     * @param string|array $commands
+     */
+    public function unRegisterExtraCommands($commands)
+    {
+        if (!is_array($commands)) {
+            $commands = array($commands);
+        }
+
+        $path = $this->getExtraCommandsConfig();
+        if (file_exists($path)) {
+            $registered = include $path;
+            foreach ($commands as $class) {
+                $idx = array_search($class, $registered);
+                if ($idx !== false && isset($registered[$idx])) {
+                    unset($registered[$idx]);
+                }
+            }
+            $this->writeExtraConfig($registered);
+        }
+    }
+
+    /**
+     * Write the given commands class to the "extra configuration" commands file
+     *
+     * @param array $commands
+     *
+     * @return bool
+     */
+    public function writeExtraConfig(array $commands = array())
+    {
+        sort($commands);
+        $path = $this->getExtraCommandsConfig();
+        $content = $this->arrayToString($commands);
+
+        return file_put_contents($path, $content) !== false;
+    }
+
+    /**
+     * Convert an array of commands to a string, to be usable with file_put_content
+     *
+     * @param array $data The list of commands to register
+     *
+     * @return string
+     */
+    public static function arrayToString(array $data = array())
+    {
+        $string = '<?php' . "\n\n"
+                  .'return array(' ."\n";
+
+        foreach ($data as $c) {
+            $string .= "    '{$c}',\n";
+        }
+
+        $string .= ');' ."\n";
+
+        return $string;
     }
 
     /**
