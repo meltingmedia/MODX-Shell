@@ -2,6 +2,9 @@
 
 use MODX\Shell\Command\ListProcessor;
 
+/**
+ * A command to list packages
+ */
 class GetList extends ListProcessor
 {
     protected $processor = 'workspace/packages/getlist';
@@ -10,7 +13,7 @@ class GetList extends ListProcessor
     );
 
     protected $name = 'package:list';
-    protected $description = 'List package';
+    protected $description = 'List packages';
 
     protected function beforeRun(array &$properties = array(), array &$options = array())
     {
