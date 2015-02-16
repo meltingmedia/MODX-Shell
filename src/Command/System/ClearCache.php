@@ -2,6 +2,9 @@
 
 use MODX\Shell\Command\ProcessorCmd;
 
+/**
+ * A command to clear/refresh system cache
+ */
 class ClearCache extends ProcessorCmd
 {
     protected $processor = 'system/clearcache';
