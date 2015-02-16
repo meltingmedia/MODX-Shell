@@ -234,6 +234,35 @@ class Application extends BaseApp
     }
 
     /**
+     * Convenient method to store extra services
+     *
+     * @param array $services
+     *
+     * @return bool
+     */
+    public function storeServices(array $services = array())
+    {
+        $modx = $this->getMODX();
+        if (!$modx) {
+            //
+            return false;
+        }
+
+        /** @var \modSystemSetting $setting */
+        $setting = $this->modx->getObject('modSystemSetting', array(
+            'key' => 'console_commands'
+        ));
+        $setting->set('value', $this->modx->toJSON($services));
+        $saved = $setting->save();
+        if ($saved) {
+            $this->modx->getCacheManager()->refresh();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Convenient method to load a service responsible of extra commands loading
      *
      * @param array $data
