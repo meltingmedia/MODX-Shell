@@ -21,4 +21,9 @@ class GetList extends ListProcessor
     {
         return $this->renderBoolean($value);
     }
+
+    protected function formatProvider($id)
+    {
+        return $this->renderObject('transport.modTransportProvider', $id, 'name');
+    }
 }
