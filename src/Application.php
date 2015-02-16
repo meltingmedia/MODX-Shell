@@ -252,6 +252,10 @@ class Application extends BaseApp
         $setting = $this->modx->getObject('modSystemSetting', array(
             'key' => 'console_commands'
         ));
+        if (!$setting) {
+            $setting = $this->modx->newObject('modSystemSetting');
+            $setting->set('key', 'console_commands');
+        }
         $setting->set('value', $this->modx->toJSON($services));
         $saved = $setting->save();
         if ($saved) {
