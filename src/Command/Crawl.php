@@ -24,6 +24,9 @@ class Crawl extends BaseCmd
         $total = $this->modx->getCount('modResource', $c);
         if ($total > 0) {
             $this->prepareCurl();
+        } else {
+            $this->comment('No resources to crawl found with criteria');
+            return $this->line($c->toSQL());
         }
 
         $this->comment("\n<info>{$total}</info> 'root' resources found");
