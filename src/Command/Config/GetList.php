@@ -26,7 +26,7 @@ class GetList extends BaseCmd
         /** @var \Symfony\Component\Console\Helper\Table $table */
         $table = new Table($this->output);
         $table->setHeaders(array(
-            'Name', 'Path'/*, 'Is valid'*/
+            'Name', 'Path', 'Revo version'
         ));
 
         $total = count($config);
@@ -34,23 +34,31 @@ class GetList extends BaseCmd
         $idx = 1;
 
         foreach ($config as $name => $data) {
-            //$separator = ' - ';
+            $version = 'Unknown';
             $separator = '   ';
             if ($this->isCurrent($currentDir, $data)) {
-                //$separator = ' <info>></info> ';
                 $separator = ' > ';
+                $versionData = $this->getMODX()->getVersionData();
+                $version = $versionData['full_version'];
             } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
                 $separator = ' x ';
+            } else {
+                chdir($data['base_path']);
+                $versionData = $this->getMODX()->getVersionData();
+                $version = $versionData['full_version'];
             }
 
             $row = array(
                 $this->formatNumber($idx, $length) .$separator. $name,
-                $data['base_path']
+                $data['base_path'],
+                $version
             );
 
             $table->addRow($row);
             $idx += 1;
         }
+
+        chdir($currentDir);
 
         $table->render($this->output);
     }
