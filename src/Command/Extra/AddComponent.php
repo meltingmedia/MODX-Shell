@@ -25,6 +25,8 @@ class AddComponent extends BaseCmd
             return;
         }
 
+        // @TODO: make sure the service is valid & loadable + handle parameters
+
         $components[$lower] = array(
             'service' => $service,
         );

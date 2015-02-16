@@ -30,6 +30,11 @@ Running `modx` should then output the available commands.
 Documentation can be found at <https://docs.melting-media.com/modx-shell/>.
 
 
+## Roadmap
+
+A road map can be found at <https://github.com/meltingmedia/MODX-Shell/milestones>
+
+
 ## License
 
 CmpStarter is licensed under the [MIT license](LICENSE.md).
