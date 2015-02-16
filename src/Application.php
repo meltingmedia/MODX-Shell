@@ -349,11 +349,12 @@ class Application extends BaseApp
      *
      * @return bool|\modX False if modX was not instantiated, or a modX instance
      */
-    public function loadMODX($config)
+    protected function loadMODX($config)
     {
         if (!$config || !file_exists($config)) {
             return false;
         }
+
         require_once $config;
         $loader = MODX_CORE_PATH . 'vendor/autoload.php';
         if (file_exists($loader)) {

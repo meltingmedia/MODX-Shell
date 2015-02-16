@@ -26,7 +26,7 @@ class GetList extends BaseCmd
         /** @var \Symfony\Component\Console\Helper\Table $table */
         $table = new Table($this->output);
         $table->setHeaders(array(
-            'Name', 'Path', 'Revo version'
+            'Name', 'Path'/*, 'Revo version'*/
         ));
 
         $total = count($config);
@@ -34,26 +34,16 @@ class GetList extends BaseCmd
         $idx = 1;
 
         foreach ($config as $name => $data) {
-            $version = 'Unknown';
             $separator = '   ';
             if ($this->isCurrent($currentDir, $data)) {
                 $separator = ' > ';
-                $versionData = $this->getMODX()->getVersionData();
-                $version = $versionData['full_version'];
             } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
                 $separator = ' x ';
-            } else {
-                $modx = $this->getApplication()->loadMODX($data['base_path'] . '/config.core.php');
-                if ($modx) {
-                    $versionData = $modx->getVersionData();
-                    $version = $versionData['full_version'];
-                }
             }
 
             $row = array(
                 $this->formatNumber($idx, $length) .$separator. $name,
-                $data['base_path'],
-                $version
+                $data['base_path']
             );
 
             $table->addRow($row);
@@ -63,13 +53,16 @@ class GetList extends BaseCmd
         $table->render($this->output);
     }
 
-    protected function getRemoteMODX($path)
+    protected function getRemoteMODXVersion($path)
     {
         if (!file_exists($path) || !file_exists($path .'/config.core.php')) {
-            return;
+            return 'Unknown';
         }
+        $config = $path . '/config.core.php';
 
-        return $this->getApplication()->loadMODX($path . '/config.core.php');
+        // @TODO: "eval" MODX_CORE_PATH to find the aboslute path to the core, then require CORE_PATH . 'docs/version.inc.php
+//        echo file_get_contents($config) . "\n";
+//        return false;
     }
 
     /**
