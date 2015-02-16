@@ -65,7 +65,7 @@ class GetList extends BaseCmd
         if (!file_exists($file)) {
             return 'Unknown';
         }
-        $v = require_once $file;
+        $v = include $file;
 
         return $v['full_version'];
     }
