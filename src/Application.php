@@ -308,7 +308,7 @@ class Application extends BaseApp
                 }
             }
             if ($coreConfig && file_exists($coreConfig)) {
-                $this->loadMODX($coreConfig);
+                $this->modx = $this->loadMODX($coreConfig);
             }
         }
 
@@ -347,9 +347,9 @@ class Application extends BaseApp
      *
      * @param string $config The path to MODX configuration file
      *
-     * @return bool Whether or not modX was instantiated
+     * @return bool|\modX False if modX was not instantiated, or a modX instance
      */
-    protected function loadMODX($config)
+    public function loadMODX($config)
     {
         if (!$config || !file_exists($config)) {
             return false;
@@ -362,15 +362,15 @@ class Application extends BaseApp
         $modx = MODX_CORE_PATH . 'model/modx/modx.class.php';
         if (file_exists($modx)) {
             require_once $modx;
-            $this->modx = new \modX();
-            $this->modx->initialize('mgr');
-            $this->modx->getService('error', 'error.modError', '', '');
+            $modx = new \modX();
+            $modx->initialize('mgr');
+            $modx->getService('error', 'error.modError', '', '');
             //$this->modx->setLogTarget('ECHO');
 
             // @todo: ability to define a user (or anything else)
 
-            if ($this->modx instanceof \modX) {
-                return true;
+            if ($modx instanceof \modX) {
+                return $modx;
             }
         }
 

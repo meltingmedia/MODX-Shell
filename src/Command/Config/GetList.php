@@ -43,9 +43,11 @@ class GetList extends BaseCmd
             } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
                 $separator = ' x ';
             } else {
-                chdir($data['base_path']);
-                $versionData = $this->getMODX()->getVersionData();
-                $version = $versionData['full_version'];
+                $modx = $this->getApplication()->loadMODX($data['base_path'] . '/config.core.php');
+                if ($modx) {
+                    $versionData = $modx->getVersionData();
+                    $version = $versionData['full_version'];
+                }
             }
 
             $row = array(
@@ -58,9 +60,16 @@ class GetList extends BaseCmd
             $idx += 1;
         }
 
-        chdir($currentDir);
-
         $table->render($this->output);
+    }
+
+    protected function getRemoteMODX($path)
+    {
+        if (!file_exists($path) || !file_exists($path .'/config.core.php')) {
+            return;
+        }
+
+        return $this->getApplication()->loadMODX($path . '/config.core.php');
     }
 
     /**
