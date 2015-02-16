@@ -26,7 +26,7 @@ class GetList extends BaseCmd
         /** @var \Symfony\Component\Console\Helper\Table $table */
         $table = new Table($this->output);
         $table->setHeaders(array(
-            'Name', 'Path'/*, 'Revo version'*/
+            'Name', 'Path', 'Revo version'
         ));
 
         $total = count($config);
@@ -35,15 +35,21 @@ class GetList extends BaseCmd
 
         foreach ($config as $name => $data) {
             $separator = '   ';
+            $version = 'Unknown';
             if ($this->isCurrent($currentDir, $data)) {
                 $separator = ' > ';
+                $versionData = $this->getMODX()->getVersionData();
+                $version = $versionData['full_version'];
             } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
                 $separator = ' x ';
+            } elseif (isset($data['core_path'])) {
+                $version = $this->getRemoteMODXVersion($data['core_path']);
             }
 
             $row = array(
                 $this->formatNumber($idx, $length) .$separator. $name,
-                $data['base_path']
+                $data['base_path'],
+                $version
             );
 
             $table->addRow($row);
@@ -55,14 +61,13 @@ class GetList extends BaseCmd
 
     protected function getRemoteMODXVersion($path)
     {
-        if (!file_exists($path) || !file_exists($path .'/config.core.php')) {
+        $file = $path . 'docs/version.inc.php';
+        if (!file_exists($file)) {
             return 'Unknown';
         }
-        $config = $path . '/config.core.php';
+        $v = require_once $file;
 
-        // @TODO: "eval" MODX_CORE_PATH to find the aboslute path to the core, then require CORE_PATH . 'docs/version.inc.php
-//        echo file_get_contents($config) . "\n";
-//        return false;
+        return $v['full_version'];
     }
 
     /**
