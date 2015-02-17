@@ -18,4 +18,9 @@ class ClearCache extends ProcessorCmd
     {
         $this->info('Cache cleared');
     }
+
+    protected function beforeRun(array &$properties = array(), array &$options = array())
+    {
+        $this->modx->setLogTarget('ECHO');
+    }
 }
