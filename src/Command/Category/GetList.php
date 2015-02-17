@@ -2,7 +2,10 @@
 
 use MODX\Shell\Command\ListProcessor;
 
-class GetList extends ListProcessor
+/**
+ * A command to list elements categories
+ */
+abstract class GetList extends ListProcessor
 {
     protected $processor = 'element/category/getlist';
     protected $headers = array(

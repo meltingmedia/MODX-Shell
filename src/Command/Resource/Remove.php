@@ -3,6 +3,9 @@
 use MODX\Shell\Command\ProcessorCmd;
 use Symfony\Component\Console\Input\InputArgument;
 
+/**
+ * A command to mark a resource as deleted
+ */
 class Remove extends ProcessorCmd
 {
     protected $processor = 'resource/delete';

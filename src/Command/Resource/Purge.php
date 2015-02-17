@@ -3,6 +3,9 @@
 use MODX\Shell\Command\ProcessorCmd;
 use Symfony\Component\Console\Input\InputArgument;
 
+/**
+ * A command to purge deleted resources
+ */
 class Purge extends ProcessorCmd
 {
     protected $processor = 'resource/emptyrecyclebin';

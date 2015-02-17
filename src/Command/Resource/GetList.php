@@ -2,6 +2,9 @@
 
 use MODX\Shell\Command\ListProcessor;
 
+/**
+ * A command to list resources
+ */
 class GetList extends ListProcessor
 {
     protected $processor = 'resource/getlist';

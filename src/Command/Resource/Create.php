@@ -3,7 +3,10 @@
 use MODX\Shell\Command\ProcessorCmd;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Create extends ProcessorCmd
+/**
+ * A Command to create resources
+ */
+abstract class Create extends ProcessorCmd
 {
     protected $processor = 'resource/create';
 

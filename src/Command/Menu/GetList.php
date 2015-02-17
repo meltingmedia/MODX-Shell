@@ -3,9 +3,9 @@
 use MODX\Shell\Command\ListProcessor;
 
 /**
- * List namespaces
+ * A command to list modMenu records
  */
-class GetList extends ListProcessor
+abstract class GetList extends ListProcessor
 {
     protected $processor = 'system/menu/getlist';
     protected $headers = array(

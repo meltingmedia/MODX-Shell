@@ -2,7 +2,10 @@
 
 use MODX\Shell\Command\ListProcessor;
 
-class GetList extends ListProcessor
+/**
+ * A command ot list chunks
+ */
+abstract class GetList extends ListProcessor
 {
     protected $processor = 'element/chunk/getlist';
     protected $headers = array(

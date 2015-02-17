@@ -37,5 +37,5 @@ A road map can be found at <https://github.com/meltingmedia/MODX-Shell/milestone
 
 ## License
 
-CmpStarter is licensed under the [MIT license](LICENSE.md).
+MODX Shell is licensed under the [MIT license](LICENSE.md).
 Copyright 2013 Melting Media <https://github.com/meltingmedia>

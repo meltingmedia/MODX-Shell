@@ -3,6 +3,9 @@
 use MODX\Shell\Command\GetProcessor;
 use Symfony\Component\Console\Input\InputArgument;
 
+/**
+ * A command to display a resource
+ */
 class Get extends GetProcessor
 {
     protected $processor = 'resource/get';

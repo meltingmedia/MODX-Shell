@@ -2,7 +2,10 @@
 
 use MODX\Shell\Command\ProcessorCmd;
 
-class Update extends ProcessorCmd
+/**
+ * A command to update a resource
+ */
+abstract class Update extends ProcessorCmd
 {
     protected $processor = 'resource/update';
 

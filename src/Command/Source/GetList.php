@@ -2,7 +2,10 @@
 
 use MODX\Shell\Command\ListProcessor;
 
-class GetList extends ListProcessor
+/**
+ * A command to list media sources
+ */
+abstract class GetList extends ListProcessor
 {
     protected $processor = 'source/getlist';
     protected $headers = array(
