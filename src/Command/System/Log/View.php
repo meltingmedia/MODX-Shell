@@ -23,6 +23,21 @@ class View extends ProcessorCmd
             return $this->comment('Log is empty');
         }
 
-        $this->info($result);
+        $result = preg_replace_callback("/\(([^)].*) @ (.+?)\)/", function($matches) {
+            $style = strtolower($matches[1]);
+            if ($style === 'debug') {
+                return "({$matches[1]} @ {$matches[2]})";
+            }
+            if ($style === 'warn') {
+                $style = 'comment';
+            } elseif ($style === 'fatal') {
+                $style = 'error';
+            }
+            return "(<{$style}>{$matches[1]} @ {$matches[2]}</{$style}>)";
+        }, $result);
+
+        // @TODO: ability to filter levels (ie. only error, warn, info or debug)
+
+        $this->line($result);
     }
 }
