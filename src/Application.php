@@ -375,6 +375,10 @@ class Application extends BaseApp
             // @todo: ability to define a user (or anything else)
 
             if ($modx instanceof \modX) {
+                if (!method_exists($modx, 'outputArray')) {
+                    require_once __DIR__ .'/xdom.php';
+                    $modx = new \xdom($modx);
+                }
                 return $modx;
             }
         }
