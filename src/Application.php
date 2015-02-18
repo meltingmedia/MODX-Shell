@@ -375,10 +375,15 @@ class Application extends BaseApp
             // @todo: ability to define a user (or anything else)
 
             if ($modx instanceof \modX) {
-                if (!method_exists($modx, 'outputArray')) {
+                $version = $modx->getVersionData();
+                if (version_compare($version['full_version'], '2.1.0-pl', '<')) {
+                    echo "loading hacked xdom class\n";
+
                     require_once __DIR__ .'/xdom.php';
-                    $modx = new \xdom($modx);
+
+                    return new \xdom($modx);
                 }
+
                 return $modx;
             }
         }
