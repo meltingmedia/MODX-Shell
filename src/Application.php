@@ -368,20 +368,12 @@ class Application extends BaseApp
         if (file_exists($modx)) {
             require_once $modx;
             $modx = new \modX();
-            $modx->initialize('mgr');
-            $modx->getService('error', 'error.modError', '', '');
-            //$this->modx->setLogTarget('ECHO');
-
-            // @todo: ability to define a user (or anything else)
+            $this->initialize($modx);
 
             if ($modx instanceof \modX) {
                 $version = $modx->getVersionData();
                 if (version_compare($version['full_version'], '2.1.0-pl', '<')) {
-                    echo "loading hacked xdom class\n";
-
-                    require_once __DIR__ .'/xdom.php';
-
-                    return new \xdom($modx);
+                    return $this->hackedMODX();
                 }
 
                 return $modx;
@@ -389,6 +381,37 @@ class Application extends BaseApp
         }
 
         return false;
+    }
+
+    /**
+     * Get an extended modX version for Revo < 2.1 because of modX::runProcessor issue
+     *
+     * @return Xdom
+     */
+    protected function hackedMODX()
+    {
+        $modx = new Xdom();
+        $this->initialize($modx);
+
+        return $modx;
+    }
+
+    /**
+     * Convenient method to initialize modX
+     *
+     * @param \modX $modx
+     *
+     * @return \modX
+     */
+    protected function initialize(\modX &$modx)
+    {
+        $modx->initialize('mgr');
+        $modx->getService('error', 'error.modError', '', '');
+        //$this->modx->setLogTarget('ECHO');
+
+        // @todo: ability to define a user (or anything else)
+
+        return $modx;
     }
 
     /**
