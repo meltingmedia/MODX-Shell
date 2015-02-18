@@ -67,14 +67,14 @@ abstract class ProcessorCmd extends BaseCmd
             return $this->info('Operation aborted');
         }
 
-        // @todo some TLC with processors errors/success
         /** @var \modProcessorResponse $response */
         $response = $this->modx->runProcessor($this->processor, $properties, $options);
         if (!($response instanceof \modProcessorResponse) || !$response->getResponse()) {
             $this->error('Something went wrong while executing the processor');
             return $this->error($response->getMessage());
         }
-        if ($response->isError()) {
+        // Trick for "list" processors not returning "success"
+        if ($response->isError() && isset($response->response['success']) && !$response->response['success']) {
             $errors = $response->getFieldErrors();
             foreach ($errors as $e) {
                 $this->error($e->field .' : '. $e->message);
@@ -120,6 +120,10 @@ abstract class ProcessorCmd extends BaseCmd
     {
         $results = $response->getResponse();
         if (!is_array($results)) {
+            if (strpos($results, '(') === 0) {
+                // Remove parenthesis for Revo 2.0/2.1
+                $results = ltrim(rtrim($results, ')'), '(');
+            }
             $results = json_decode($results, true);
         }
 
