@@ -11,7 +11,7 @@ class GetURLs extends BaseCmd
     const MODX = true;
 
     protected $name = 'context:urls';
-    protected $descriptions = 'List contexts URLs';
+    protected $description = 'List contexts URLs';
 
     protected function process()
     {
