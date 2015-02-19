@@ -1,6 +1,8 @@
 <?php namespace MODX\Shell;
 
 use Symfony\Component\Console\Application as BaseApp;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,14 +21,48 @@ class Application extends BaseApp
     public function __construct()
     {
         parent::__construct('MODX Shell', self::VERSION);
-        $this->getMODX();
+        //$this->getMODX();
     }
+
+    protected function getDefaultInputDefinition()
+    {
+        $def = parent::getDefaultInputDefinition();
+        $def->addOption(new InputOption('--site', '-s', InputOption::VALUE_OPTIONAL, 'An instance name'));
+
+        return $def;
+    }
+
+//    protected function configureIO(InputInterface $input, OutputInterface $output)
+//    {
+//        //echo print_r($input, true);
+////        if ($input->hasParameterOption(array('-i'))) {
+////            echo 'Site found'. "\n";
+////        }
+////        echo 'First argument : ' . $input->getFirstArgument();
+//        parent::configureIO($input, $output);
+//
+//        if ($input->hasParameterOption(array('--site', '-s'))) {
+//            $site = $input->getParameterOption(array('--site', '-s'));
+//            echo 'Site given : '. $site . "\n";
+//            $this->readConfigFile();
+//            $config = $this->config;
+//            //echo 'Config : ' . print_r($config, true) . "\n";
+//            if (array_key_exists($site, $config)) {
+//                $changed = chdir($config[$site]['base_path']);
+//                echo $changed .' changed to : '. $config[$site]['base_path']. "\n";
+//            }
+//        }
+//        $this->getMODX();
+//        //echo print_r($input->getOptions(), true);
+//
+//    }
 
     /**
      * @return \Symfony\Component\Console\Command\Command[]
      */
     protected function getDefaultCommands()
     {
+        /** @var InputDefinition $commands */
         $commands = parent::getDefaultCommands();
 
         $this->loadCommands($commands);
@@ -48,6 +84,7 @@ class Application extends BaseApp
      */
     protected function loadCommands(array &$commands = array())
     {
+        $this->handleInstanceAsArgument();
         $basePath = __DIR__ . '/Command';
 
         $finder = new \Symfony\Component\Finder\Finder();
@@ -69,6 +106,22 @@ class Application extends BaseApp
                 $commands[] = new $className();
             }
 
+        }
+    }
+
+    /**
+     * Adds the ability to run a command on an instance without being in its folders/path
+     */
+    protected function handleInstanceAsArgument()
+    {
+        $input = new ArgvInput();
+        if ($input->hasParameterOption(array('--site', '-s'))) {
+            $site = $input->getParameterOption(array('--site', '-s'));
+            $this->readConfigFile();
+            $config = $this->config;
+            if (array_key_exists($site, $config)) {
+                chdir($config[$site]['base_path']);
+            }
         }
     }
 
