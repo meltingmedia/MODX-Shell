@@ -114,15 +114,34 @@ class Application extends BaseApp
      */
     protected function handleInstanceAsArgument()
     {
-        $input = new ArgvInput();
-        if ($input->hasParameterOption(array('--site', '-s'))) {
-            $site = $input->getParameterOption(array('--site', '-s'));
-            $this->readConfigFile();
-            $config = $this->config;
-            if (array_key_exists($site, $config)) {
-                chdir($config[$site]['base_path']);
+        $app = $this;
+        $args = array_filter($_SERVER['argv'], function($value) use ($app) {
+            if (strpos($value, '-s') === 0 || strpos($value, '--site') === 0) {
+                //echo $value . ' is a match'."\n";
+                $site = str_replace(array('-s', '--site'), '', $value);
+                $app->readConfigFile();
+                $config = $app->config;
+//                echo print_r($config, true) . "\n";
+                if (array_key_exists($site, $config)) {
+                    chdir($config[$site]['base_path']);
+                }
+                return false;
             }
-        }
+
+            return true;
+        });
+        $_SERVER['argv'] = array_values($args);
+//        echo print_r($_SERVER['argv'], true) . "\n";
+
+//        $input = new ArgvInput();
+//        if ($input->hasParameterOption(array('--site', '-s'))) {
+//            $site = $input->getParameterOption(array('--site', '-s'));
+//            $this->readConfigFile();
+//            $config = $this->config;
+//            if (array_key_exists($site, $config)) {
+//                chdir($config[$site]['base_path']);
+//            }
+//        }
     }
 
     /**
