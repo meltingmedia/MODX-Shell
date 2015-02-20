@@ -375,32 +375,23 @@ abstract class BaseCmd extends Command
     public function getMODX()
     {
         if (!($this->modx instanceof \modX)) {
-            $this->setMODX();
+            $this->modx = $this->getApplication()->getMODX();
         }
 
         return $this->modx;
     }
 
     /**
-     * Try to set a modX instance
+     * Check if the command if "available" (mostly if a modX instance if available)
      *
-     * @return void
+     * @return bool
      */
-    protected function setMODX()
+    public function isEnabled()
     {
-        $application = $this->getApplication();
-        if ($application instanceof Application) {
-            /* @var $application Application */
-            $this->modx = $application->getMODX();
+        if ($this::MODX && !$this->getMODX()) {
+            return false;
         }
-    }
 
-//    public function isEnabled()
-//    {
-//        if ($this::MODX && !$this->getMODX()) {
-//            return false;
-//        }
-//
-//        return true;
-//    }
+        return true;
+    }
 }

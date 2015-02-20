@@ -9,6 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
+/**
+ * MODX Shell application
+ */
 class Application extends BaseApp
 {
     const VERSION = '0.0.1';
@@ -32,16 +35,22 @@ class Application extends BaseApp
     protected function getDefaultInputDefinition()
     {
         $def = parent::getDefaultInputDefinition();
-        $def->addOption(new InputOption('--site', '-s', InputOption::VALUE_OPTIONAL, 'An instance name'));
+        $def->addOption(
+            new InputOption('--site', '-s', InputOption::VALUE_OPTIONAL, 'An instance name to execute the command to')
+        );
 
         return $def;
     }
 
     /**
+     * Load/register all available commands
+     *
      * @return \Symfony\Component\Console\Command\Command[]
      */
     protected function getDefaultCommands()
     {
+        // Change the "context" if executing the command on a specific instance
+        $this->handleInstanceAsArgument();
         // Regular Symfony Console commands
         $commands = parent::getDefaultCommands();
         // Core commands
@@ -61,7 +70,6 @@ class Application extends BaseApp
      */
     protected function loadCommands(array &$commands = array())
     {
-        $this->handleInstanceAsArgument();
         $basePath = __DIR__ . '/Command';
 
         $finder = new \Symfony\Component\Finder\Finder();
@@ -70,18 +78,11 @@ class Application extends BaseApp
             ->notContains('abstract class')
             ->name('*.php');
 
-        // Check if modX is available
-        $modx = $this->getMODX();
-
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ($finder as $file) {
             /** @var \MODX\Shell\Command\BaseCmd $className */
             $className = $this->getCommandClass($file);
-
-            // Prevent commands which requires modX to be displayed if modX is not available
-            if (defined("{$className}::MODX") && (!$className::MODX || $modx)) {
-                $commands[] = new $className();
-            }
+            $commands[] = new $className();
         }
     }
 
@@ -129,19 +130,15 @@ class Application extends BaseApp
     protected function loadExtraCommands(array &$commands = array())
     {
         $toRemove = false;
-        // Check if modX is available
-        $modx = $this->getMODX();
 
         foreach ($this->extensions->getAll() as $class) {
             if (!class_exists($class)) {
+                // Purge non existing/badly configured commands
                 $this->extensions->remove($class);
                 $toRemove = true;
                 continue;
             }
-            // Prevent commands which requires modX to be displayed if modX is not available
-            if (defined("{$class}::MODX") && (!$class::MODX || $modx)) {
-                $commands[] = new $class();
-            }
+            $commands[] = new $class();
         }
         if ($toRemove) {
             $this->extensions->save();
@@ -157,23 +154,13 @@ class Application extends BaseApp
     {
         if ($this->getMODX()) {
             foreach ($this->components->getAll() as $k => $config) {
-                $service = $config['service'];
-                $lower = strtolower($service);
-
-                $cmpCommands = array();
-
                 $loaded = $this->getExtraService($config);
-                if (!$loaded) {
+                if (!$loaded || !method_exists($loaded, 'getCommands')) {
                     //echo 'Unable to load service class '.$service.' from '. $path ."\n";
                     continue;
                 }
 
-                $this->modx->{$lower} =& $loaded;
-                if (method_exists($loaded, 'getCommands')) {
-                    $cmpCommands = $loaded->getCommands();
-                }
-
-                foreach ($cmpCommands as $c) {
+                foreach ($loaded->getCommands() as $c) {
                     $commands[] = new $c();
                 }
             }
@@ -209,7 +196,6 @@ class Application extends BaseApp
     public function getMODX()
     {
         if (null === $this->modx) {
-            //$config = $this->getCurrentConfig();
             $currentPath = $this->getCwd();
             // First search in current dir
             $coreConfig = file_exists('./config.core.php') ? './config.core.php' : false;
@@ -314,38 +300,6 @@ class Application extends BaseApp
         // @todo: ability to define a user (or anything else)
 
         return $modx;
-    }
-
-    /**
-     * Get the configuration file path for the current user
-     *
-     * @return string The configuration file path
-     */
-    public function getConfigFile()
-    {
-        $path = getenv('HOME') . '/.modx/config.ini';
-        if (!file_exists($path)) {
-            $base = getenv('HOME') . '/.modx/';
-            if (!file_exists($base)) {
-                mkdir($base);
-            }
-            file_put_contents($path, '');
-        }
-
-        return $path;
-    }
-
-    /**
-     * Get the extra commands configuration file path
-     *
-     * @return string
-     * @deprecated
-     */
-    public function getExtraCommandsConfig()
-    {
-        $path = getenv('HOME') . '/.modx/extraCommands.php';
-
-        return $path;
     }
 
     /**

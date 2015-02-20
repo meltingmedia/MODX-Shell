@@ -12,22 +12,17 @@ class Extras extends Components
 
     protected function process()
     {
-        $configFile = $this->getApplication()->getExtraCommandsConfig();
-        if (file_exists($configFile)) {
-            $extras = include $configFile;
-            if (empty($extras)) {
-                $this->info('No third party commands registered');
-                return;
-            }
-            $this->info(print_r($extras, true));
-
-            $table = $this->prepareTable();
-            foreach ($extras as $class) {
-                $table->addRow($this->getTableRow($class));
-            }
-            $table->render();
-        } else {
+        $extras = $this->getApplication()->extensions->getAll();
+        if (empty($extras)) {
             $this->info('No third party commands registered');
+            return;
         }
+        $this->info(print_r($extras, true));
+
+        $table = $this->prepareTable();
+        foreach ($extras as $class) {
+            $table->addRow($this->getTableRow($class));
+        }
+        $table->render();
     }
 }
