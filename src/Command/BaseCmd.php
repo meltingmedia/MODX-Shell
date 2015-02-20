@@ -394,4 +394,13 @@ abstract class BaseCmd extends Command
             $this->modx = $application->getMODX();
         }
     }
+
+//    public function isEnabled()
+//    {
+//        if ($this::MODX && !$this->getMODX()) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
 }

@@ -60,12 +60,5 @@ HEREDOC
     return 0;
 }
 
-#complete -F _console console
-#complete -F _console console-dev
-#complete -F _console console-test
-#complete -F _console console-prod
-#complete -F _console console-staging
-#complete -F _console Symfony
-#complete -F _console sf
 complete -F _console modx
 COMP_WORDBREAKS=${COMP_WORDBREAKS//:}

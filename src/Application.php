@@ -32,46 +32,18 @@ class Application extends BaseApp
         return $def;
     }
 
-//    protected function configureIO(InputInterface $input, OutputInterface $output)
-//    {
-//        //echo print_r($input, true);
-////        if ($input->hasParameterOption(array('-i'))) {
-////            echo 'Site found'. "\n";
-////        }
-////        echo 'First argument : ' . $input->getFirstArgument();
-//        parent::configureIO($input, $output);
-//
-//        if ($input->hasParameterOption(array('--site', '-s'))) {
-//            $site = $input->getParameterOption(array('--site', '-s'));
-//            echo 'Site given : '. $site . "\n";
-//            $this->readConfigFile();
-//            $config = $this->config;
-//            //echo 'Config : ' . print_r($config, true) . "\n";
-//            if (array_key_exists($site, $config)) {
-//                $changed = chdir($config[$site]['base_path']);
-//                echo $changed .' changed to : '. $config[$site]['base_path']. "\n";
-//            }
-//        }
-//        $this->getMODX();
-//        //echo print_r($input->getOptions(), true);
-//
-//    }
-
     /**
      * @return \Symfony\Component\Console\Command\Command[]
      */
     protected function getDefaultCommands()
     {
-        /** @var InputDefinition $commands */
+        // Regular Symfony Console commands
         $commands = parent::getDefaultCommands();
-
+        // Core commands
         $this->loadCommands($commands);
-
-//        if ('phar:' === substr(__FILE__, 0, 5)) {
-//            $commands[] = new Command\SelfUpdateCommand();
-//        }
-
+        // Extension commands
         $this->loadExtraCommands($commands);
+        // Commands registered in the modX instance we are dealing with
         $this->loadComponentsCommands($commands);
 
         return $commands;
@@ -105,7 +77,6 @@ class Application extends BaseApp
             if (defined("{$className}::MODX") && (!$className::MODX || $modx)) {
                 $commands[] = new $className();
             }
-
         }
     }
 
@@ -115,33 +86,20 @@ class Application extends BaseApp
     protected function handleInstanceAsArgument()
     {
         $app = $this;
-        $args = array_filter($_SERVER['argv'], function($value) use ($app) {
-            if (strpos($value, '-s') === 0 || strpos($value, '--site') === 0) {
-                //echo $value . ' is a match'."\n";
-                $site = str_replace(array('-s', '--site'), '', $value);
+        array_filter($_SERVER['argv'], function($value) use ($app) {
+            if (strpos($value, '-s') === 0) {
+                $site = str_replace('-s', '', $value);
                 $app->readConfigFile();
                 $config = $app->config;
-//                echo print_r($config, true) . "\n";
                 if (array_key_exists($site, $config)) {
                     chdir($config[$site]['base_path']);
                 }
+
                 return false;
             }
 
             return true;
         });
-        $_SERVER['argv'] = array_values($args);
-//        echo print_r($_SERVER['argv'], true) . "\n";
-
-//        $input = new ArgvInput();
-//        if ($input->hasParameterOption(array('--site', '-s'))) {
-//            $site = $input->getParameterOption(array('--site', '-s'));
-//            $this->readConfigFile();
-//            $config = $this->config;
-//            if (array_key_exists($site, $config)) {
-//                chdir($config[$site]['base_path']);
-//            }
-//        }
     }
 
     /**
@@ -259,23 +217,13 @@ class Application extends BaseApp
     {
         if ($this->getMODX()) {
             $componentsCommands = $this->getComponentsWithCommands();
-            //echo print_r($componentsCommands, true);
-            foreach ($componentsCommands as $k => $config) {
-                //echo print_r($config, true);
 
+            foreach ($componentsCommands as $k => $config) {
                 $service = $config['service'];
                 $lower = strtolower($service);
 
-                //$path = $config['service_path'];
-
-                $params = array();
-                if (array_key_exists('params', $config)) {
-                    $params = $config['params'];
-                }
                 $cmpCommands = array();
-                //$cmpCommands = $config['commands'];
 
-                //$loaded = $this->modx->getService($lower, $service, $path, $params);
                 $loaded = $this->getExtraService($config);
                 if (!$loaded) {
                     //echo 'Unable to load service class '.$service.' from '. $path ."\n";
@@ -288,7 +236,6 @@ class Application extends BaseApp
                 }
 
                 foreach ($cmpCommands as $c) {
-                    // @TODO: inject service ?
                     $commands[] = new $c();
                 }
             }
