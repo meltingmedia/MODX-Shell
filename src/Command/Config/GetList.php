@@ -38,8 +38,11 @@ class GetList extends BaseCmd
             $version = 'Unknown';
             if ($this->isCurrent($currentDir, $data)) {
                 $separator = ' > ';
-                $versionData = $this->getMODX()->getVersionData();
-                $version = $versionData['full_version'];
+                $modx = $this->getMODX();
+                if ($modx) {
+                    $versionData = $modx->getVersionData();
+                    $version = $versionData['full_version'];
+                }
             } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
                 $separator = ' x ';
             } elseif (isset($data['core_path'])) {
