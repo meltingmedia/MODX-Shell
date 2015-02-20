@@ -12,6 +12,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 class Application extends BaseApp
 {
     const VERSION = '0.0.1';
+    public $instances;
+    public $extensions;
+    public $components;
 
     /**
      * @var \modX
@@ -20,8 +23,10 @@ class Application extends BaseApp
 
     public function __construct()
     {
+        $this->instances = new Configuration\Instance();
+        $this->extensions = new Configuration\Extension();
+        $this->components = new Configuration\Component($this);
         parent::__construct('MODX Shell', self::VERSION);
-        //$this->getMODX();
     }
 
     protected function getDefaultInputDefinition()
@@ -89,8 +94,7 @@ class Application extends BaseApp
         array_filter($_SERVER['argv'], function($value) use ($app) {
             if (strpos($value, '-s') === 0) {
                 $site = str_replace('-s', '', $value);
-                $app->readConfigFile();
-                $config = $app->config;
+                $config = $app->instances->getAll();
                 if (array_key_exists($site, $config)) {
                     chdir($config[$site]['base_path']);
                 }
@@ -124,88 +128,24 @@ class Application extends BaseApp
      */
     protected function loadExtraCommands(array &$commands = array())
     {
-        $toRemove = array();
-        $configFile = $this->getExtraCommandsConfig();
-        if (file_exists($configFile)) {
-            // Check if modX is available
-            $modx = $this->getMODX();
+        $toRemove = false;
+        // Check if modX is available
+        $modx = $this->getMODX();
 
-            $extras = include $configFile;
-            foreach ($extras as $class) {
-                if (!class_exists($class)) {
-                    $toRemove[] = $class;
-                    continue;
-                }
-                // Prevent commands which requires modX to be displayed if modX is not available
-                if (defined("{$class}::MODX") && (!$class::MODX || $modx)) {
-                    $commands[] = new $class();
-                }
+        foreach ($this->extensions->getAll() as $class) {
+            if (!class_exists($class)) {
+                $this->extensions->remove($class);
+                $toRemove = true;
+                continue;
             }
-            if (!empty($toRemove)) {
-                $this->unRegisterExtraCommands($toRemove);
+            // Prevent commands which requires modX to be displayed if modX is not available
+            if (defined("{$class}::MODX") && (!$class::MODX || $modx)) {
+                $commands[] = new $class();
             }
         }
-    }
-
-    /**
-     * Un-register the given command classes from the extra commands
-     *
-     * @param string|array $commands
-     */
-    public function unRegisterExtraCommands($commands)
-    {
-        if (!is_array($commands)) {
-            $commands = array($commands);
+        if ($toRemove) {
+            $this->extensions->save();
         }
-
-        $path = $this->getExtraCommandsConfig();
-        if (file_exists($path)) {
-            $registered = include $path;
-            foreach ($commands as $class) {
-                $idx = array_search($class, $registered);
-                if ($idx !== false && isset($registered[$idx])) {
-                    unset($registered[$idx]);
-                }
-            }
-            $this->writeExtraConfig($registered);
-        }
-    }
-
-    /**
-     * Write the given commands class to the "extra configuration" commands file
-     *
-     * @param array $commands
-     *
-     * @return bool
-     */
-    public function writeExtraConfig(array $commands = array())
-    {
-        sort($commands);
-        $path = $this->getExtraCommandsConfig();
-        $content = $this->arrayToString($commands);
-
-        return file_put_contents($path, $content) !== false;
-    }
-
-    /**
-     * Convert an array of commands to a string, to be usable with file_put_content
-     *
-     * @param array $data The list of commands to register
-     *
-     * @return string
-     */
-    public static function arrayToString(array $data = array())
-    {
-        $string = '<?php' . "\n\n"
-                  .'return array(' ."\n";
-
-        foreach ($data as $c) {
-            $string .= "    '{$c}',\n";
-        }
-
-        $string .= ');' ."\n";
-
-        return $string;
     }
 
     /**
@@ -216,9 +156,7 @@ class Application extends BaseApp
     protected function loadComponentsCommands(array & $commands = array())
     {
         if ($this->getMODX()) {
-            $componentsCommands = $this->getComponentsWithCommands();
-
-            foreach ($componentsCommands as $k => $config) {
+            foreach ($this->components->getAll() as $k => $config) {
                 $service = $config['service'];
                 $lower = strtolower($service);
 
@@ -240,49 +178,6 @@ class Application extends BaseApp
                 }
             }
         }
-    }
-
-    /**
-     * Get an array of registered services "adding" additional commands
-     *
-     * @return array
-     */
-    public function getComponentsWithCommands()
-    {
-        return $this->modx->fromJSON($this->modx->getOption('console_commands', null, '{}'));
-    }
-
-    /**
-     * Convenient method to store extra services
-     *
-     * @param array $services
-     *
-     * @return bool
-     */
-    public function storeServices(array $services = array())
-    {
-        $modx = $this->getMODX();
-        if (!$modx) {
-            //
-            return false;
-        }
-
-        /** @var \modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting', array(
-            'key' => 'console_commands'
-        ));
-        if (!$setting) {
-            $setting = $this->modx->newObject('modSystemSetting');
-            $setting->set('key', 'console_commands');
-        }
-        $setting->set('value', $this->modx->toJSON($services));
-        $saved = $setting->save();
-        if ($saved) {
-            $this->modx->getCacheManager()->refresh();
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -314,13 +209,13 @@ class Application extends BaseApp
     public function getMODX()
     {
         if (null === $this->modx) {
-            $config = $this->getCurrentConfig();
+            //$config = $this->getCurrentConfig();
             $currentPath = $this->getCwd();
             // First search in current dir
             $coreConfig = file_exists('./config.core.php') ? './config.core.php' : false;
             if (!$coreConfig) {
                 // Then iterate through the configuration file
-                foreach ($config as $cmp => $data) {
+                foreach ($this->instances->getAll() as $cmp => $data) {
                     if (array_key_exists('base_path', $data)) {
                         $length = strlen($data['base_path']);
                         if (substr($currentPath, 0, $length) === $data['base_path']) {
@@ -336,18 +231,6 @@ class Application extends BaseApp
         }
 
         return $this->modx;
-    }
-
-    /**
-     * Set an instance of modX for this application
-     *
-     * @param \modX $modx
-     *
-     * @return void
-     */
-    public function setMODX(\modX &$modx)
-    {
-        $this->modx = $modx;
     }
 
     /**
@@ -456,153 +339,13 @@ class Application extends BaseApp
      * Get the extra commands configuration file path
      *
      * @return string
+     * @deprecated
      */
     public function getExtraCommandsConfig()
     {
         $path = getenv('HOME') . '/.modx/extraCommands.php';
 
         return $path;
-    }
-
-    /**
-     * Reads & return the configuration file
-     *
-     * @return array The original config file (or an empty array)
-     */
-    public function getCurrentConfig()
-    {
-        if (empty($this->config)) {
-            $this->readConfigFile();
-        }
-
-        return $this->config;
-    }
-
-    /**
-     * Refresh the configuration file
-     *
-     * @return void
-     */
-    protected function readConfigFile()
-    {
-        $config = $this->getConfigFile();
-        if (file_exists($config)) {
-            $this->config = parse_ini_file($config, true);
-        }
-    }
-
-    /**
-     * Writes the given data to the configuration file
-     *
-     * @param array $data Configuration data to write
-     *
-     * @return bool Whether or not the write succeed
-     */
-    public function writeConfig(array $data)
-    {
-        $content = "; This is MODX Shell configuration file \n\n";
-        $path = $this->getConfigFile();
-
-        foreach ($data as $cmp => $config) {
-            // Section
-            $content .= '['. $cmp ."]\n";
-            foreach ($config as $key => $value) {
-                if (is_array($value)) {
-                    foreach ($value as $k => $v) {
-                        $content .= $key ."['{$k}'] = '" . $v ."'\n";
-                    }
-                } elseif ($value == '') {
-                    $content .= $key . " = \n";
-                } else {
-                    $content .= $key." = '". $value ."'\n";
-                }
-            }
-            $content .= "\n";
-        }
-
-        // Create the config folder if required
-        if (!file_exists($path)) {
-            $tmp = explode('/', $path);
-            unset ($tmp[(count($tmp) - 1)]);
-            $folder = implode('/', $tmp);
-            if (!file_exists($folder)) {
-                mkdir($folder);
-            }
-        }
-
-        $result = (file_put_contents($path, $content) !== false);
-        if ($result) {
-            $this->readConfigFile();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get the given instance configuration details
-     *
-     * @param string $name The optional instance name (defaulting to the current one)
-     *
-     * @return mixed Either an array of details if details are found, or null
-     */
-    public function getInstanceDetail($name = '')
-    {
-        if (empty($name)) {
-            $name = $this->getCurrentInstanceName();
-        }
-
-        if (empty($name)) {
-            return;
-        }
-
-        $config = $this->getCurrentConfig();
-        if (array_key_exists($name, $config)) {
-            return $config[$name];
-        }
-
-        return;
-    }
-
-    /**
-     * Iterate through the configured instances to find the instance name we are "in"
-     *
-     * @return null|string Either the instance name if found, or null
-     */
-    public function getCurrentInstanceName()
-    {
-        $path = $this->getCwd();
-        $config = $this->getCurrentConfig();
-        foreach ($config as $name => $data) {
-            if (array_key_exists('base_path', $data)) {
-                $instancePath = $data['base_path'];
-                if (substr($path, 0, strlen($instancePath)) === $instancePath) {
-                    return $name;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Iterate through the configured instances to find the base path of the instance we are "in"
-     *
-     * @return string|null Either the base path if found, or null
-     */
-    public function getCurrentInstancePath()
-    {
-        $path = $this->getCwd();
-        $config = $this->getCurrentConfig();
-        foreach ($config as $name => $data) {
-            if (array_key_exists('base_path', $data)) {
-                $instancePath = $data['base_path'];
-                if (substr($path, 0, strlen($instancePath)) === $instancePath) {
-                    return $instancePath;
-                }
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -615,14 +358,13 @@ class Application extends BaseApp
      */
     public function getService($name = '', $params = array())
     {
-        $this->getMODX();
-
         if (empty($name)) {
-            $name = $this->getCurrentInstanceName();
+            $name = $this->instances->current();
         }
         if (!$name) {
             return null;
         }
+        $this->getMODX();
         $lower = strtolower($name);
 
         $path = $this->modx->getOption(

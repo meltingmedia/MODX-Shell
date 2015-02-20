@@ -13,9 +13,7 @@ class GetList extends BaseCmd
 
     protected function process()
     {
-        /** @var \MODX\Shell\Application $app */
-        $app = $this->getApplication();
-        $config = $app->getCurrentConfig();
+        $config = $this->getApplication()->instances->getAll();
 
         if (empty($config)) {
             return $this->error('No configuration file found');

@@ -41,10 +41,11 @@ class Add extends BaseCmd
             $path .= '/';
         }
 
-        /** @var \MODX\Shell\Application $application */
-        $application = $this->getApplication();
-        // @todo: beware of refactoring
-        $original = $application->getCurrentConfig();
+        $config = $this->getApplication()->instances;
+        $exists = $config->get($service);
+        if ($exists && !$erase) {
+            return $this->error('Entry with that name already in config : '. $service);
+        }
 
         $data = array(
             $service => array(
@@ -55,25 +56,13 @@ class Add extends BaseCmd
         if ($path == $this->getApplication()->getCwd() && $this->getMODX()) {
             $data[$service]['core_path'] = $this->modx->getOption('core_path');
         }
-        $data = array_merge($original, $data);
-        ksort($data);
 
-        //$this->writeConfig($data, $input, $output);
-        if ($erase || !array_key_exists($service, $original)) {
-            $this->writeConfig($data);
-        } else {
-            $this->error('Entry with that name already in config : '. $service);
-        }
-    }
-
-    protected function writeConfig(array $data)
-    {
-        /** @var \MODX\Shell\Application $application */
-        $application = $this->getApplication();
-        if ($application->writeConfig($data)) {
-            return $this->info('Config file updated');
+        $config->set($service, $data[$service]);
+        $saved = $config->save();
+        if (!$saved) {
+            return $this->error('Something went wrong while updating the config');
         }
 
-        $this->error('Something went wrong while updating the config');
+        return $this->info('Config file updated');
     }
 }

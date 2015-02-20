@@ -25,26 +25,15 @@ class Rm extends BaseCmd
 
         /** @var \MODX\Shell\Application $app */
         $app = $this->getApplication();
-        $original = $app->getCurrentConfig();
+        //$original = $app->getCurrentConfig();
 
-        if (!array_key_exists($service, $original)) {
+        if (!$app->instances->get($service)) {
             return $this->error('Component with name ' . $service . ' not found!');
         }
 
-        unset($original[$service]);
-        $this->writeConfig($original);
+        $app->instances->remove($service);
+        $app->instances->save();
 
         $this->info('Instance '. $service .' removed from configuration');
-    }
-
-    protected function writeConfig(array $data)
-    {
-        /** @var \MODX\Shell\Application $application */
-        $application = $this->getApplication();
-        if ($application->writeConfig($data)) {
-            return $this->info('Config file updated');
-        }
-
-        $this->error('Something went wrong while updating the config');
     }
 }

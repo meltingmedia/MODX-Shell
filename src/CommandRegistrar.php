@@ -2,6 +2,7 @@
 
 use Composer\Script\Event;
 use MODX\Shell\Application;
+use MODX\Shell\Configuration\ConfigurationInterface;
 
 /**
  * A simple class to implement to register third party commands
@@ -26,54 +27,39 @@ abstract class CommandRegistrar
     {
         self::$io = $event->getIO();
 
-        $app = new Application;
-        $extraFile = $app->getExtraCommandsConfig();
-        self::$io->write('<info>Editing extra commands for '.self::getNS().'...</info>');
+        /** @var Application $app */
+        $app = new Application();
+        $config = $app->extensions;
+        self::$io->write('Editing extra commands for <info>'.self::getNS().'</info>...');
 
-        $commands = array();
-        if (file_exists($extraFile)) {
-            // Load already registered commands
-            $commands = include $extraFile;
-            // And remove "deprecated" ones, if any
-            self::unRegister($commands);
-        }
+        self::unRegister($config);
 
         // Iterate the Command folder, looking for command classes
-        self::$io->write('<info>...looking for commands to register...</info>');
+        self::$io->write('...looking for commands to register...');
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach (self::listCommands() as $file) {
             $className = self::getCommandClass($file);
-            if (in_array($className, $commands)) {
-                // Command already registered, skipping it
-                continue;
-            }
-            $commands[] = $className;
+            $config->set($className);
         }
+        $config->save();
 
-        // Write to extra commands configuration file
-        $app->writeExtraConfig($commands);
-
-        self::$io->write('<info>...done</info>');
+        self::$io->write('...<info>done</info>');
         self::$reflection = null;
     }
 
     /**
      * Un-register previous commands, that are now deprecated/removed
      *
-     * @param array $commands Existing commands
+     * @param ConfigurationInterface $config Existing commands
      */
-    public static function unRegister(array &$commands = array())
+    public static function unRegister($config)
     {
         $deprecated = self::getRootPath() .'/deprecated.php';
         if (file_exists($deprecated)) {
             self::$io->write('<info>...looking for commands to remove...</info>');
             $deprecated = include $deprecated;
             foreach ($deprecated as $class) {
-                $idx = array_search($class, $commands);
-                if ($idx !== false && isset($commands[$idx])) {
-                    self::$io->write("Removing {$commands[$idx]}");
-                    unset($commands[$idx]);
-                }
+                $config->remove($class);
             }
         }
     }

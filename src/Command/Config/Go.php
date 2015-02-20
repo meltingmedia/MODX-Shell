@@ -28,8 +28,7 @@ class Go extends BaseCmd
             $key = 'idx';
         }
 
-        $app = $this->getApplication();
-        $config = $app->getCurrentConfig();
+        $config = $this->getApplication()->instances->getAll();
 
         $idx = 1;
         foreach ($config as $name => $data) {

@@ -16,11 +16,11 @@ class AddComponent extends BaseCmd
 
     protected function process()
     {
-        $components = $this->getApplication()->getComponentsWithCommands();
+        $config = $this->getApplication()->components;
         $service = $this->argument('service');
         $lower = strtolower($service);
 
-        if (array_key_exists($lower, $components)) {
+        if ($config->get($lower)) {
             $this->info($service .' is already registered');
             return;
         }
@@ -30,8 +30,9 @@ class AddComponent extends BaseCmd
         $components[$lower] = array(
             'service' => $service,
         );
+        $config->set($lower, $components[$lower]);
 
-        $saved = $this->getApplication()->storeServices($components);
+        $saved = $config->save();
         if ($saved) {
             $this->info($service. ' successfully registered');
             return;

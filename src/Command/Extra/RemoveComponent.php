@@ -15,18 +15,18 @@ class RemoveComponent extends BaseCmd
 
     protected function process()
     {
-        $components = $this->getApplication()->getComponentsWithCommands();
+        $config = $this->getApplication()->components;
         $service = $this->argument('service');
         $lower = strtolower($service);
 
-        if (!array_key_exists($lower, $components)) {
+        if (!$config->get($lower)) {
             $this->info($service .' not registered');
             return;
         }
 
-        unset($components[$lower]);
+        $config->remove($lower);
 
-        $saved = $this->getApplication()->storeServices($components);
+        $saved = $config->save();
         if ($saved) {
             $this->info($service. ' unregistered');
             return;
