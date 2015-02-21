@@ -16,6 +16,7 @@ abstract class BaseCmd extends Command
      * Define whether or not a modX instance is required to run the command
      */
     const MODX = false;
+    const MIN_MODX = '';
 
     /**
      * The input interface implementation.
@@ -388,8 +389,18 @@ abstract class BaseCmd extends Command
      */
     public function isEnabled()
     {
-        if ($this::MODX && !$this->getMODX()) {
-            return false;
+        if ($this::MODX) {
+            // Handle commands requiring a modX instance
+            if (!$this->getMODX()) {
+                return false;
+            }
+            if (!empty($this::MIN_MODX)) {
+                // Handle commands requiring a minimum modX version
+                $version = $this->modx->getVersionData();
+                if (!version_compare($version['full_version'], $this::MIN_MODX, '>=')) {
+                    return false;
+                }
+            }
         }
 
         return true;
