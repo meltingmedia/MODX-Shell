@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0a0c60e061e793ee649c37343e9eeee5",
+    "hash": "7724736c51bafb1b77cd85484c74ae1c",
     "packages": [
         {
             "name": "symfony/console",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "289113e60aad754d35b50347f66ecd3a4d96d03c"
+                "reference": "be6d274e452bc6e3016d7d2d725b1e59a58982bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/289113e60aad754d35b50347f66ecd3a4d96d03c",
-                "reference": "289113e60aad754d35b50347f66ecd3a4d96d03c",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/be6d274e452bc6e3016d7d2d725b1e59a58982bb",
+                "reference": "be6d274e452bc6e3016d7d2d725b1e59a58982bb",
                 "shasum": ""
             },
             "require": {
@@ -27,6 +27,7 @@
             "require-dev": {
                 "psr/log": "~1.0",
                 "symfony/event-dispatcher": "~2.1|~3.0.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0.0",
                 "symfony/process": "~2.1|~3.0.0"
             },
             "suggest": {
@@ -61,7 +62,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2015-02-12 11:03:31"
+            "time": "2015-02-21 13:05:27"
         },
         {
             "name": "symfony/finder",
@@ -70,16 +71,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "509d125782f31ebbd0bb3cd9824f1ccc1e5d5a18"
+                "reference": "5db34b8c6ab8c04452a5660ad9535766940b5348"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/509d125782f31ebbd0bb3cd9824f1ccc1e5d5a18",
-                "reference": "509d125782f31ebbd0bb3cd9824f1ccc1e5d5a18",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/5db34b8c6ab8c04452a5660ad9535766940b5348",
+                "reference": "5db34b8c6ab8c04452a5660ad9535766940b5348",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7|~3.0.0"
             },
             "type": "library",
             "extra": {
@@ -108,7 +112,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2015-02-11 07:17:51"
+            "time": "2015-02-21 13:05:27"
         },
         {
             "name": "symfony/process",
@@ -117,16 +121,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "b2afcf65b787d1550bc0cc8ad2991a1b04650f70"
+                "reference": "8fdfab66a3db42796ef85abe92203aafbb5fe802"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/b2afcf65b787d1550bc0cc8ad2991a1b04650f70",
-                "reference": "b2afcf65b787d1550bc0cc8ad2991a1b04650f70",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/8fdfab66a3db42796ef85abe92203aafbb5fe802",
+                "reference": "8fdfab66a3db42796ef85abe92203aafbb5fe802",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7|~3.0.0"
             },
             "type": "library",
             "extra": {
@@ -155,7 +162,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2015-02-11 12:46:36"
+            "time": "2015-02-18 10:38:04"
         }
     ],
     "packages-dev": [],
