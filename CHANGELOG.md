@@ -3,6 +3,13 @@
 Changes for MODX Shell.
 
 
+## 0.0.3-dev ()
+
+* Added an helper to format/render "trees"
+* Added `ColoredLog` "formatter" to display modX system log
+* Fixed issues on PHP 5.3
+
+
 ## 0.0.2-dev (2015/02/21)
 
 * More generally, started a huge code cleanup (some more coming before v0.1.0)
