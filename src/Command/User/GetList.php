@@ -15,7 +15,7 @@ class GetList extends ListProcessor
     protected $name = 'user:list';
     protected $description = 'List users';
 
-    protected function configure()
+    protected function afterInit()
     {
         $this->getMODX();
         $version = $this->modx->getVersionData();

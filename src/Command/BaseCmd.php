@@ -134,8 +134,14 @@ abstract class BaseCmd extends Command
                 return false;
             }
         }
+        $this->afterInit();
 
         return true;
+    }
+
+    protected function afterInit()
+    {
+
     }
 
     /**
