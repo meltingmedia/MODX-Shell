@@ -12,6 +12,19 @@ abstract class ListProcessor extends ProcessorCmd
     );
     protected $showPagination = true;
 
+    protected function init()
+    {
+        $success = parent::init();
+        if ($success) {
+            $version = $this->modx->getVersionData();
+            if (!version_compare($version['full_version'], '2.2.0-pl', '>=')) {
+                // Add a default limit to processors do not list everything
+                $this->defaultsProperties['limit'] = 10;
+            }
+        }
+
+        return $success;
+    }
     protected function processResponse(array $results = array())
     {
         $total = $results['total'];
