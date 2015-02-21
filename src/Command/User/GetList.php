@@ -17,6 +17,7 @@ class GetList extends ListProcessor
 
     protected function configure()
     {
+        $this->getMODX();
         $version = $this->modx->getVersionData();
         if (version_compare($version['full_version'], '2.2.0-pl', '<')) {
             $this->headers = array(
