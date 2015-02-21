@@ -127,9 +127,7 @@ abstract class BaseCmd extends Command
      */
     protected function init()
     {
-        /** @var BaseCmd $c */
-        $c = get_called_class();
-        if ($c::MODX) {
+        if (self::MODX) {
             $loaded = $this->getMODX();
             if (!$loaded) {
                 $this->error('Sorry, seems like MODX is not accessible here...');
