@@ -10,7 +10,7 @@ class ColoredLog
      *
      * @return mixed
      */
-    public function render($data)
+    public function process($data)
     {
         return preg_replace_callback("/\(([^)].*) @ (.+?)\)/", function($matches) {
             $style = strtolower($matches[1]);
