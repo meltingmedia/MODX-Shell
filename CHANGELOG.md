@@ -5,6 +5,7 @@ Changes for MODX Shell.
 
 ## 0.0.3-dev ()
 
+* Added `user:resetpassword` command to reset a user password
 * Added `plugin:disable` command to disable a plugin
 * Added `TreeBuilder` class to build a multidimensional array from a flat array (tree structured) + added `menu:list` command as example
 * `ListProcessor` commands now set a limit of `10` for Revolution < 2.2.0-pl
