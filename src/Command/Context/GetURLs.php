@@ -22,10 +22,14 @@ class GetURLs extends BaseCmd
         /** @var \modContext $context */
         foreach ($collection as $context) {
             $context->prepare();
+            $url = $context->getOption('site_url');
+            if ($context->key === 'mgr') {
+                $url .= ltrim($this->modx->getOption('manager_url'), '/');
+            }
             $urls[] = array(
                 'key' => $context->key,
                 'name' => $context->get('name') ? $context->name : $context->key,
-                'url' => $context->getOption('site_url'),
+                'url' => $url,
             );
         }
 
