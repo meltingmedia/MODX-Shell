@@ -1,7 +1,11 @@
 <?php namespace MODX\Shell\Command\System\Log;
 
 use MODX\Shell\Command\ProcessorCmd;
+use MODX\Shell\Formatter\ColoredLog;
 
+/**
+ * A command to view modX system log
+ */
 class View extends ProcessorCmd
 {
     protected $processor = 'system/errorlog/get';
@@ -23,18 +27,8 @@ class View extends ProcessorCmd
             return $this->comment('Log is empty');
         }
 
-        $result = preg_replace_callback("/\(([^)].*) @ (.+?)\)/", function($matches) {
-            $style = strtolower($matches[1]);
-            if ($style === 'debug') {
-                return "({$matches[1]} @ {$matches[2]})";
-            }
-            if ($style === 'warn') {
-                $style = 'comment';
-            } elseif ($style === 'fatal') {
-                $style = 'error';
-            }
-            return "(<{$style}>{$matches[1]} @ {$matches[2]}</{$style}>)";
-        }, $result);
+        $formatter = new ColoredLog;
+        $result = $formatter->process($result);
 
         // @TODO: ability to filter levels (ie. only error, warn, info or debug)
 

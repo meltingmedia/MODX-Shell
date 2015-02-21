@@ -2,7 +2,6 @@
 
 use MODX\Shell\Command\BaseCmd;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Process\Process;
 
 class Go extends BaseCmd
 {
