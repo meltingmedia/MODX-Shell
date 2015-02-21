@@ -5,6 +5,8 @@ Changes for MODX Shell.
 
 ## 0.0.3-dev ()
 
+* Added `TreeBuilder` class to build a multidimensional array from a flat array (tree structured) + added `menu:list` command as example
+* `ListProcessor` commands now set a limit of `10` for Revolution < 2.2.0-pl
 * Added an helper to format/render "trees"
 * Added `ColoredLog` "formatter" to display modX system log
 * Fixed issues on PHP 5.3

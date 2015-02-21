@@ -58,7 +58,7 @@ class Tree
      */
     protected function renderItem(array $item, $idx = 0)
     {
-        $separator = str_repeat('    ', $idx) . '|- ';
+        $separator = str_repeat('<info>|</info>   ', $idx) . '<info>|-</info> ';
         $this->output->writeln($separator.$this->getItemLabel($item));
         if (isset($item[$this->children]) && !empty($item[$this->children])) {
             $idx++;

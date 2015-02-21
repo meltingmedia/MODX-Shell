@@ -1,11 +1,13 @@
 <?php namespace MODX\Shell\Command\Menu;
 
 use MODX\Shell\Command\ListProcessor;
+use MODX\Shell\Formatter\Tree;
+use MODX\Shell\TreeBuilder;
 
 /**
  * A command to list modMenu records
  */
-abstract class GetList extends ListProcessor
+class GetList extends ListProcessor
 {
     protected $processor = 'system/menu/getlist';
     protected $headers = array(
@@ -13,17 +15,25 @@ abstract class GetList extends ListProcessor
     );
 
     protected $defaultsProperties = array(
-        'sort' => 'text',
+        'sort' => 'parent',
         'dir' => 'ASC',
-        'limit' => 10,
+        'limit' => 9999,
         'start' => 0,
     );
 
     protected $name = 'menu:list';
     protected $description = 'List menus';
 
-//    protected function formatAction($value)
-//    {
-//        return $this->renderObject('modAction', $value)
-//    }
+    protected function processResponse(array $results = array())
+    {
+        $builder = new TreeBuilder($results['results'], 'text', 'parent', 'children');
+        $tree = $builder->getSortedTree('menuindex', 'desc');
+
+        $format = new Tree($this->output);
+        $format->setValueField(function($item) {
+            return "{$item['text_lex']} - {$item['menuindex']} (<comment>{$item['text']}</comment>)";
+        });
+        $format->setChildrenField('children');
+        $format->render($tree);
+    }
 }
