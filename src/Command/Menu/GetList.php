@@ -27,11 +27,11 @@ class GetList extends ListProcessor
     protected function processResponse(array $results = array())
     {
         $builder = new TreeBuilder($results['results'], 'text', 'parent', 'children');
-        $tree = $builder->getSortedTree('menuindex', 'desc');
+        $tree = $builder->getSortedTree('menuindex');
 
         $format = new Tree($this->output);
         $format->setValueField(function($item) {
-            return "{$item['text_lex']} - {$item['menuindex']} (<comment>{$item['text']}</comment>)";
+            return "{$item['text_lex']} (<comment>{$item['text']}</comment>)";
         });
         $format->setChildrenField('children');
         $format->render($tree);
