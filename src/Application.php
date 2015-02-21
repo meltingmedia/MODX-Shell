@@ -14,7 +14,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 class Application extends BaseApp
 {
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.2';
     public $instances;
     public $extensions;
     public $components;

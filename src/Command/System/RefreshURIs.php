@@ -7,6 +7,7 @@ use MODX\Shell\Command\ProcessorCmd;
  */
 class RefreshURIs extends ProcessorCmd
 {
+    const MIN_MODX = '2.3.3-pl';
     protected $processor = 'system/refreshuris';
 
     protected $defaultOptions = array();
