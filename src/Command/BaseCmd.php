@@ -133,15 +133,9 @@ abstract class BaseCmd extends Command
                 $this->error('Sorry, seems like MODX is not accessible here...');
                 return false;
             }
-        }
-        $this->afterInit();
+        };
 
         return true;
-    }
-
-    protected function afterInit()
-    {
-
     }
 
     /**

@@ -15,15 +15,20 @@ class GetList extends ListProcessor
     protected $name = 'user:list';
     protected $description = 'List users';
 
-    protected function afterInit()
+    protected function init()
     {
-        $this->getMODX();
-        $version = $this->modx->getVersionData();
-        if (version_compare($version['full_version'], '2.2.0-pl', '<')) {
-            $this->headers = array(
-                'id', 'username', 'active'
-            );
+        $success = parent::init();
+        if ($success) {
+            $version = $this->modx->getVersionData();
+            if (version_compare($version['full_version'], '2.2.0-pl', '<')) {
+                // Modify headers since "sudo" was not present before 2.2
+                $this->headers = array(
+                    'id', 'username', 'active'
+                );
+            }
         }
+
+        return $success;
     }
 
     /**
