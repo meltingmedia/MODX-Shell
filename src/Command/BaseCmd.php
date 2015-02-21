@@ -127,7 +127,7 @@ abstract class BaseCmd extends Command
      */
     protected function init()
     {
-        if (self::MODX) {
+        if ($this::MODX) {
             $loaded = $this->getMODX();
             if (!$loaded) {
                 $this->error('Sorry, seems like MODX is not accessible here...');
@@ -392,10 +392,11 @@ abstract class BaseCmd extends Command
             if (!$this->getMODX()) {
                 return false;
             }
-            if (!empty($this::MIN_MODX)) {
+            $min = $this::MIN_MODX;
+            if (!empty($min)) {
                 // Handle commands requiring a minimum modX version
                 $version = $this->modx->getVersionData();
-                if (!version_compare($version['full_version'], $this::MIN_MODX, '>=')) {
+                if (!version_compare($version['full_version'], $min, '>=')) {
                     return false;
                 }
             }
