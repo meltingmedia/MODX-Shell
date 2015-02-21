@@ -1,5 +1,7 @@
 <?php namespace MODX\Shell\Command;
 
+use Symfony\Component\Console\Helper\Table;
+
 /**
  * Command to help display an object as a table (mostly fot get* processors)
  */
@@ -13,11 +15,10 @@ abstract class GetProcessor extends ProcessorCmd
     {
         $object = $results['object'];
 
-        /** @var \Symfony\Component\Console\Helper\TableHelper $table */
-        $table = $this->getApplication()->getHelperSet()->get('table');
+        $table = new Table($this->output);
         $table->setHeaders($this->headers);
         $table->addRow($this->processRow($object));
 
-        $table->render($this->output);
+        $table->render();
     }
 }
