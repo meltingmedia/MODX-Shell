@@ -20,37 +20,33 @@ class GetList extends BaseCmd
         }
         $currentDir = $this->getApplication()->getCwd();
 
-
-        /** @var \Symfony\Component\Console\Helper\Table $table */
         $table = new Table($this->output);
+        //$table->setStyle('compact');
         $table->setHeaders(array(
             'Name', 'Path', 'Revo version'
         ));
-
-        $total = count($config);
-        $length = strlen($total);
         $idx = 1;
 
         foreach ($config as $name => $data) {
-            $separator = '   ';
-            $version = 'Unknown';
+            $version = '<error>Unknown</error>';
+            $color = '';
             if ($this->isCurrent($currentDir, $data)) {
-                $separator = ' > ';
+                $color = 'info';
                 $modx = $this->getMODX();
                 if ($modx) {
                     $versionData = $modx->getVersionData();
                     $version = $versionData['full_version'];
                 }
             } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
-                $separator = ' x ';
+                $color = 'error';
             } elseif (isset($data['core_path'])) {
                 $version = $this->getRemoteMODXVersion($data['core_path']);
             }
 
             $row = array(
-                $this->formatNumber($idx, $length) .$separator. $name,
-                $data['base_path'],
-                $version
+                $this->renderColors($name, (empty($color) ? 'comment' : $color)),
+                $this->renderColors($data['base_path'], $color),
+                $this->renderColors($version, $color)
             );
 
             $table->addRow($row);
@@ -60,6 +56,30 @@ class GetList extends BaseCmd
         $table->render($this->output);
     }
 
+    /**
+     * Convenient method to render a colored table cell
+     *
+     * @param string $data
+     * @param string $color
+     *
+     * @return string
+     */
+    protected function renderColors($data, $color = '')
+    {
+        if (empty($color)) {
+            return $data;
+        }
+
+        return "<{$color}>{$data}</{$color}>";
+    }
+
+    /**
+     * Try to read modX version from a not instantiated version
+     *
+     * @param string $path
+     *
+     * @return string
+     */
     protected function getRemoteMODXVersion($path)
     {
         $file = $path . 'docs/version.inc.php';

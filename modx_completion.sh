@@ -16,6 +16,14 @@ _console()
     site=""
     for var in "$@"
     do
+#        if [[ $var == "-s" ]]; then
+#            #echo "Looking for instances names"
+#            names=$(${script} config:list | sed 's/|/ /' | awk '{print $1}')
+#            echo $names;
+#            return 0;
+#            COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
+#            return  0;
+#        fi
         if [[ $var == "-s"* ]] || [[ $var == "--site"* ]]; then
             site="$var"
         fi
