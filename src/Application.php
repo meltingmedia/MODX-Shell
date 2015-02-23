@@ -31,7 +31,7 @@ class Application extends BaseApp
         $this->handleInstanceAsArgument();
         $this->extensions = new Configuration\Extension();
         $this->components = new Configuration\Component($this);
-        parent::__construct('MODX Shell', self::VERSION);
+        parent::__construct('MODX Shell', file_get_contents(dirname(__DIR__) . '/VERSION'));
     }
 
     protected function getDefaultInputDefinition()
