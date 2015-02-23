@@ -27,6 +27,8 @@ class Application extends BaseApp
     public function __construct()
     {
         $this->instances = new Configuration\Instance();
+        // Change the "context" if executing the command on a specific instance
+        $this->handleInstanceAsArgument();
         $this->extensions = new Configuration\Extension();
         $this->components = new Configuration\Component($this);
         parent::__construct('MODX Shell', self::VERSION);
@@ -49,8 +51,6 @@ class Application extends BaseApp
      */
     protected function getDefaultCommands()
     {
-        // Change the "context" if executing the command on a specific instance
-        $this->handleInstanceAsArgument();
         // Regular Symfony Console commands
         $commands = parent::getDefaultCommands();
         // Core commands
