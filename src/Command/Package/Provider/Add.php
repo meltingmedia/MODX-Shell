@@ -115,13 +115,15 @@ class Add extends BaseCmd
                 'username',
                 'u',
                 InputOption::VALUE_REQUIRED,
-                'The provider username'
+                'The provider username',
+                ''
             ),
             array(
                 'api_key',
                 'a',
                 InputOption::VALUE_REQUIRED,
-                'The provider API key'
+                'The provider API key',
+                ''
             ),
         );
     }
