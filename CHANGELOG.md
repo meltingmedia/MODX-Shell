@@ -5,6 +5,7 @@ Changes for MODX Shell.
 
 ## 0.0.3-dev ()
 
+* Added `package:provider:add` to easily add a package provider (from a known list)
 * Added `user:resetpassword` command to reset a user password
 * Added `plugin:disable` command to disable a plugin
 * Added `TreeBuilder` class to build a multidimensional array from a flat array (tree structured) + added `menu:list` command as example
