@@ -69,7 +69,7 @@ class Instance extends Base
 
         foreach ($this->items as $name => $data) {
             if (array_key_exists('base_path', $data)) {
-                $instancePath = $data['base_path'];
+                $instancePath = rtrim($data['base_path'], '/');
                 if (substr($path, 0, strlen($instancePath)) === $instancePath) {
                     return $name;
                 }
@@ -99,7 +99,7 @@ class Instance extends Base
     public function getCurrentConfig($key = '')
     {
         $config = $this->get($this->current());
-        if (empty($key) && isset($config[$key])) {
+        if (!empty($key) && isset($config[$key])) {
             return $config[$key];
         }
 
