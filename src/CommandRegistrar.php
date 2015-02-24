@@ -37,20 +37,18 @@ abstract class CommandRegistrar
         self::unRegister($config);
 
         // Iterate the Command folder, looking for command classes
-        self::$io->write('...looking for commands to register...');
+        self::$io->write('  looking for commands to register...');
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach (self::listCommands() as $file) {
             $className = self::getCommandClass($file);
             if (!in_array($className, self::$unregistered)) {
                 $config->set($className);
                 self::$io->write("   Added <info>{$className}</info>");
-            } else {
-                self::$io->write("   Skept <comment>{$className}</comment>");
             }
         }
         $config->save();
 
-        self::$io->write('...<info>Done</info>');
+        self::$io->write('<info>Done</info>');
         self::$reflection = null;
     }
 
@@ -63,7 +61,7 @@ abstract class CommandRegistrar
     {
         $deprecated = self::getRootPath() .'/deprecated.php';
         if (file_exists($deprecated)) {
-            self::$io->write('...looking for commands to remove...');
+            self::$io->write('  looking for commands to remove...');
             $deprecated = include $deprecated;
             foreach ($deprecated as $class) {
                 self::$unregistered[] = $class;
