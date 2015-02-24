@@ -37,7 +37,7 @@ abstract class CommandRegistrar
         self::unRegister($config);
 
         // Iterate the Command folder, looking for command classes
-        self::$io->write('  looking for commands to register...');
+        self::$io->write(' - looking for commands to register...');
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach (self::listCommands() as $file) {
             $className = self::getCommandClass($file);
