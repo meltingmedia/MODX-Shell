@@ -17,6 +17,7 @@ abstract class CommandRegistrar
      * @var \ReflectionClass
      */
     protected static $reflection = null;
+    protected static $unregistered = array();
 
     /**
      * Process the command registration
@@ -32,6 +33,7 @@ abstract class CommandRegistrar
         $config = $app->extensions;
         self::$io->write('Editing extra commands for <info>'.self::getNS().'</info>...');
 
+        // First, un-register "deprecated" commands, if any
         self::unRegister($config);
 
         // Iterate the Command folder, looking for command classes
@@ -39,7 +41,9 @@ abstract class CommandRegistrar
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach (self::listCommands() as $file) {
             $className = self::getCommandClass($file);
-            $config->set($className);
+            if (!in_array($className, self::$unregistered)) {
+                $config->set($className);
+            }
         }
         $config->save();
 
@@ -59,6 +63,7 @@ abstract class CommandRegistrar
             self::$io->write('<info>...looking for commands to remove...</info>');
             $deprecated = include $deprecated;
             foreach ($deprecated as $class) {
+                self::$unregistered[] = $class;
                 $config->remove($class);
             }
         }
