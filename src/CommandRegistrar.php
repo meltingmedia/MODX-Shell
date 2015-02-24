@@ -43,12 +43,12 @@ abstract class CommandRegistrar
             $className = self::getCommandClass($file);
             if (!in_array($className, self::$unregistered)) {
                 $config->set($className);
-                self::$io->write("   Added <info>{$className}</info>");
+                self::$io->write("    Added <info>{$className}</info>");
             }
         }
         $config->save();
 
-        self::$io->write('<info>Done</info>');
+        self::$io->write(' ');
         self::$reflection = null;
     }
 
@@ -61,12 +61,12 @@ abstract class CommandRegistrar
     {
         $deprecated = self::getRootPath() .'/deprecated.php';
         if (file_exists($deprecated)) {
-            self::$io->write('  looking for commands to remove...');
+            self::$io->write('  - looking for commands to remove...');
             $deprecated = include $deprecated;
             foreach ($deprecated as $class) {
                 self::$unregistered[] = $class;
                 $config->remove($class);
-                self::$io->write("   Removing <comment>{$class}</comment>");
+                self::$io->write("    Removed <comment>{$class}</comment>");
             }
         }
     }
