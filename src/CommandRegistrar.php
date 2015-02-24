@@ -43,7 +43,7 @@ abstract class CommandRegistrar
             $className = self::getCommandClass($file);
             if (!in_array($className, self::$unregistered)) {
                 $config->set($className);
-                self::$io->write("    Added <info>{$className}</info>");
+                self::$io->write("    Added   <info>{$className}</info>");
             }
         }
         $config->save();
