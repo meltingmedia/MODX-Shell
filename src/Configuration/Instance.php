@@ -41,9 +41,14 @@ class Instance extends Base
         return (file_put_contents($this->path, $content) !== false);
     }
 
-    public function load($path = null)
+    /**
+     * Load the instances configuration/data from the given path/file
+     *
+     * @param string $path
+     */
+    public function load($path = '')
     {
-        if (!$path) {
+        if (empty($path)) {
             $path = $this->path;
         }
 
@@ -52,6 +57,13 @@ class Instance extends Base
         }
     }
 
+    /**
+     * Get the instance name for the given path
+     *
+     * @param string $path
+     *
+     * @return null|string
+     */
     public function findFormPath($path)
     {
 
@@ -67,8 +79,30 @@ class Instance extends Base
         return null;
     }
 
+    /**
+     * Get the current instance name, if found
+     *
+     * @return string|null
+     */
     public function current()
     {
         return $this->findFormPath(getcwd() . '/');
+    }
+
+    /**
+     * Get current instance configuration data
+     *
+     * @param string $key An option key to retrieve from the config
+     *
+     * @return null|array|string
+     */
+    public function getCurrentConfig($key = '')
+    {
+        $config = $this->get($this->current());
+        if (empty($key) && isset($config[$key])) {
+            return $config[$key];
+        }
+
+        return $config;
     }
 }
