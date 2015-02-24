@@ -16,6 +16,9 @@ abstract class BaseCmd extends Command
      * Define whether or not a modX instance is required to run the command
      */
     const MODX = false;
+    /**
+     * Define if a minimum modX version is required (ie. 2.2.0-pl) to be able to run the command
+     */
     const MIN_MODX = '';
 
     /**
@@ -57,7 +60,7 @@ abstract class BaseCmd extends Command
     /**
      * A modX instance
      *
-     * @var \modX
+     * @var \modX|null
      */
     public $modx;
 
@@ -127,6 +130,7 @@ abstract class BaseCmd extends Command
      */
     protected function init()
     {
+        // @TODO: remove, duplicate of isEnabled ?
         if ($this::MODX) {
             $loaded = $this->getMODX();
             if (!$loaded) {
