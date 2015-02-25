@@ -66,14 +66,12 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
         );
         $json = json_encode($items);
 
-        require_once dirname(__DIR__) . '/modX.php';
-
-        $modx = $this->prophesize('modX');
-        $modx->getOption('console_commands', null, '{}')->shouldBeCalled()->willReturn($json);
-        $modx->fromJSON($json)->shouldBeCalled()->willReturn($items);
+        $modx = $this->getMock('modX', array('getOption', 'fromJSON'));
+        $modx->expects($this->once())->method('getOption')->with('console_commands', null, '{}')->will($this->returnValue($json));
+        $modx->expects($this->once())->method('fromJSON')->with($json)->will($this->returnValue($items));
 
         $app = $this->prophesize('MODX\Shell\Application');
-        $app->getMODX()->willReturn($modx->reveal());
+        $app->getMODX()->willReturn($modx);
 
         $config = new Component($app->reveal());
 
