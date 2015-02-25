@@ -56,4 +56,27 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEmpty($config->getAll(), 'Items are empty when no modX instance is available');
     }
+
+    public function testItemsLoadedFromModx()
+    {
+        $items = array(
+            'test' => array(
+                'service' => 'fake'
+            ),
+        );
+        $json = json_encode($items);
+
+        require_once dirname(__DIR__) . '/modX.php';
+
+        $modx = $this->prophesize('modX');
+        $modx->getOption('console_commands', null, '{}')->shouldBeCalled()->willReturn($json);
+        $modx->fromJSON($json)->shouldBeCalled()->willReturn($items);
+
+        $app = $this->prophesize('MODX\Shell\Application');
+        $app->getMODX()->willReturn($modx->reveal());
+
+        $config = new Component($app->reveal());
+
+        $this->assertEquals($items, $config->getAll(), 'Items retrieved from modX should be available');
+    }
 }
