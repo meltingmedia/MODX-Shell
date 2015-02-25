@@ -4,7 +4,6 @@ use MODX\Shell\Configuration\Extension;
 
 class ExtensionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @param array $items
      *
