@@ -45,6 +45,26 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
 
         $config->remove('\Another\Command\Class');
         $this->assertEquals(1, count($config->getAll()), 'Removing a class name from the items is possible');
+        $this->assertNull($config->get('\Another\Command\Class'));
+
+        $class = '\\Some\\Class\\Name';
+        $config->set($class);
+        $this->assertEquals($class, $config->get($class), 'Adding a new command class is possible');
+    }
+
+    /**
+     * @param array $items
+     *
+     * @dataProvider getData
+     */
+    public function testFormat($items)
+    {
+        $config = new Extension($items);
+        $formatted = $config->formatData();
+        $formatted = str_replace('<?php', '', $formatted);
+        sort($items);
+
+        $this->assertEquals($items, eval($formatted), 'Items are correctly formatted for file storage');
     }
 
     public function _testSave()

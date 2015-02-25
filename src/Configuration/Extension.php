@@ -45,8 +45,20 @@ class Extension extends Base
 
     public function save()
     {
+        $content = $this->formatData();
+
+        return file_put_contents($this->path, $content) !== false;
+    }
+
+    /**
+     * Format the items so they could be stored as PHP array
+     *
+     * @return string
+     */
+    public function formatData()
+    {
         $content = '<?php' . "\n\n"
-                  .'return array(' ."\n";
+                   .'return array(' ."\n";
 
         sort($this->items);
         foreach ($this->items as $c) {
@@ -55,7 +67,7 @@ class Extension extends Base
 
         $content .= ');' ."\n";
 
-        return file_put_contents($this->path, $content) !== false;
+        return $content;
     }
 
     public function load($path = null)
