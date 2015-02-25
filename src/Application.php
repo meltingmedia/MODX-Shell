@@ -14,7 +14,6 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 class Application extends BaseApp
 {
-    const VERSION = '0.0.2';
     public $instances;
     public $extensions;
     public $components;
@@ -95,9 +94,9 @@ class Application extends BaseApp
         array_filter($_SERVER['argv'], function($value) use ($app) {
             if (strpos($value, '-s') === 0) {
                 $site = str_replace('-s', '', $value);
-                $config = $app->instances->getAll();
-                if (array_key_exists($site, $config)) {
-                    chdir($config[$site]['base_path']);
+                $dir = $app->instances->getConfig($site, 'base_path');
+                if ($dir) {
+                    chdir($dir);
                 }
 
                 return false;
@@ -196,20 +195,10 @@ class Application extends BaseApp
     public function getMODX()
     {
         if (null === $this->modx) {
-            $currentPath = $this->getCwd();
-            // First search in current dir
-            $coreConfig = file_exists('./config.core.php') ? './config.core.php' : false;
-            if (!$coreConfig) {
-                // Then iterate through the configuration file
-                foreach ($this->instances->getAll() as $cmp => $data) {
-                    if (array_key_exists('base_path', $data)) {
-                        $length = strlen($data['base_path']);
-                        if (substr($currentPath, 0, $length) === $data['base_path']) {
-                            $coreConfig = $data['base_path'] . 'config.core.php';
-                            break;
-                        }
-                    }
-                }
+            $coreConfig = $this->instances->getCurrentConfig('base_path');
+            if ($coreConfig) {
+                // A base path has been found
+                $coreConfig .= 'config.core.php';
             }
             if ($coreConfig && file_exists($coreConfig)) {
                 $this->modx = $this->loadMODX($coreConfig);

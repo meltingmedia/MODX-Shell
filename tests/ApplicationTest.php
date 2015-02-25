@@ -20,6 +20,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('MODX Shell', $app->getName(), 'Shell is named MODX Shell');
     }
 
+    public function testInstanceAsArgument()
+    {
+        //Application::
+        //$app = new Application;
+    }
     public function _testInstanceArgumentInConstructor()
     {
         $app = $this->prophesize('MODX\Shell\Application');

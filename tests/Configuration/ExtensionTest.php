@@ -4,36 +4,40 @@ use MODX\Shell\Configuration\Extension;
 
 class ExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstructor()
+
+    /**
+     * @param array $items
+     *
+     * @dataProvider getData
+     */
+    public function testConstructor($items)
     {
-        $items = array(
-            '\Some\Command\Class',
-            '\Another\Command\Class'
-        );
         $config = new Extension($items);
 
         $this->assertNotEmpty($config->getAll(), 'Classes passed in constructor should be set');
         $this->assertEquals($items, $config->getAll(), 'Classes passed in constructor should match');
     }
 
-    public function testGetter()
+    /**
+     * @param array $items
+     *
+     * @dataProvider getData
+     */
+    public function testGetter($items)
     {
-        $items = array(
-            '\Some\Command\Class',
-            '\Another\Command\Class'
-        );
         $config = new Extension($items);
 
         $this->assertEquals('\Another\Command\Class', $config->get('\Another\Command\Class'), 'Getting a valid class name should return its class name');
         $this->assertNull($config->get('\Fake\Class'), 'Getting an invalid class name should return null');
     }
 
-    public function testSetter()
+    /**
+     * @param array $items
+     *
+     * @dataProvider getData
+     */
+    public function testSetter($items)
     {
-        $items = array(
-            '\Some\Command\Class',
-            '\Another\Command\Class'
-        );
         $config = new Extension($items);
 
         $config->set('\Another\Command\Class');
@@ -51,5 +55,17 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
     public function _testLoad()
     {
         // @TODO
+    }
+
+    public function getData()
+    {
+        return array(
+            array(
+                array(
+                    '\Some\Command\Class',
+                    '\Another\Command\Class'
+                ),
+            ),
+        );
     }
 }

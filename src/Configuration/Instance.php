@@ -5,6 +5,11 @@
  */
 class Instance extends Base
 {
+    /**
+     * The ini file instance data is stored in
+     *
+     * @var string
+     */
     protected $path = '';
 
     public function __construct(array $items = array())
@@ -18,6 +23,18 @@ class Instance extends Base
     }
 
     public function save()
+    {
+        $content = $this->formatConfigurationData();
+
+        return (file_put_contents($this->path, $content) !== false);
+    }
+
+    /**
+     * Format the items array as a correct ini string
+     *
+     * @return string
+     */
+    protected function formatConfigurationData()
     {
         $content = "; This is MODX Shell configuration file \n\n";
         ksort($this->items);
@@ -38,7 +55,7 @@ class Instance extends Base
             $content .= "\n";
         }
 
-        return (file_put_contents($this->path, $content) !== false);
+        return $content;
     }
 
     /**
@@ -66,7 +83,6 @@ class Instance extends Base
      */
     public function findFormPath($path)
     {
-
         foreach ($this->items as $name => $data) {
             if (array_key_exists('base_path', $data)) {
                 $instancePath = rtrim($data['base_path'], '/');
@@ -104,5 +120,27 @@ class Instance extends Base
         }
 
         return $config;
+    }
+
+    /**
+     * Get the given instance configuration data, if any
+     *
+     * @param string $instance The instance name
+     * @param string $key An optional key to retrieve from the configuration data
+     *
+     * @return null|string|array
+     */
+    public function getConfig($instance, $key = '')
+    {
+        if (array_key_exists($instance, $this->items)) {
+            $data = $this->items[$instance];
+            if (!empty($key) && isset($data[$key])) {
+                $data = $data[$key];
+            }
+
+            return $data;
+        }
+
+        return null;
     }
 }

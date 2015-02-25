@@ -76,7 +76,7 @@ class GetList extends BaseCmd
     /**
      * Try to read modX version from a not instantiated version
      *
-     * @param string $path
+     * @param string $path Revolution core path
      *
      * @return string
      */
