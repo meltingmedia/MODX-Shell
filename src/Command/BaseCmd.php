@@ -63,6 +63,12 @@ abstract class BaseCmd extends Command
      * @var \modX|null
      */
     public $modx;
+    /**
+     * Unix timestamp when the command execution started
+     *
+     * @var float
+     */
+    protected $start;
 
 
     /**
@@ -155,6 +161,7 @@ abstract class BaseCmd extends Command
         if (!$this->init()) {
             return $this->error('Unable to init the command!');
         }
+        $this->start = microtime(true);
 
         return $this->process();
     }
@@ -382,6 +389,31 @@ abstract class BaseCmd extends Command
         }
 
         return $this->modx;
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getRunStats()
+    {
+        $output = 'Time: ' . number_format((microtime(true) - $this->start) * 1000, 0) . 'ms | ';
+        $output .= 'Memory Usage: ' . $this->convertBytes(memory_get_usage(false)) . ' | ';
+        $output .= 'Peak Memory Usage: ' . $this->convertBytes(memory_get_peak_usage(false));
+
+        return $output;
+    }
+
+    /**
+     * @param $bytes
+     *
+     * @return string
+     */
+    protected function convertBytes($bytes)
+    {
+        $unit = array('b','kb','mb','gb','tb','pb');
+        $i = floor(log($bytes, 1024));
+        return @round($bytes / pow(1024, $i), 2).' '.$unit[$i];
     }
 
     /**
