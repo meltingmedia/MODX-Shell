@@ -106,9 +106,13 @@ class Crawl extends BaseCmd
     protected function crawl($id)
     {
         $url = $this->modx->makeUrl($id, '', '', 'full');
-        $this->line("Requesting <info>{$url}</info> (<comment>{$id}</comment>)");
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_exec($this->curl);
+        $status = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        if ($status > 400) {
+            $status = "<error>{$status}</error>";
+        }
+        $this->line("Requested <info>{$url}</info> (<comment>{$id}</comment>) - {$status}");
 
         if (curl_errno($this->curl)) {
             $this->error('cURL error: ' . curl_errno($this->curl) . ' - ' . curl_error($this->curl));
@@ -126,7 +130,7 @@ class Crawl extends BaseCmd
         curl_setopt_array($ch, array(
             CURLOPT_NOBODY => true,
             CURLOPT_FAILONERROR => false,
-            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_RETURNTRANSFER => true,
 
             CURLOPT_SSL_VERIFYPEER => false,
