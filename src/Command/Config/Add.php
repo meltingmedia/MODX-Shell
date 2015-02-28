@@ -53,7 +53,7 @@ class Add extends BaseCmd
                 'base_path' => $path,
             ),
         );
-        if ($path == $this->getApplication()->getCwd() && $this->getMODX()) {
+        if (chdir($path) && $this->getMODX()) {
             $data[$service]['core_path'] = $this->modx->getOption('core_path');
         }
 

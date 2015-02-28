@@ -199,6 +199,9 @@ class Application extends BaseApp
             if ($coreConfig) {
                 // A base path has been found
                 $coreConfig .= 'config.core.php';
+            } else {
+                // Get current path
+                $coreConfig = $this->getCwd() . 'config.core.php';
             }
             if ($coreConfig && file_exists($coreConfig)) {
                 $this->modx = $this->loadMODX($coreConfig);
