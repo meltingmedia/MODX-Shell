@@ -32,4 +32,17 @@ abstract class Base implements ConfigurationInterface
     {
         return $this->items;
     }
+
+    public function getConfigPath()
+    {
+        return getenv('HOME') . '/.modx/';
+    }
+
+    public function makeSureConfigPathExists()
+    {
+        $path = $this->getConfigPath();
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
+    }
 }

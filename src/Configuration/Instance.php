@@ -14,7 +14,7 @@ class Instance extends Base
 
     public function __construct(array $items = array())
     {
-        $this->path = getenv('HOME') . '/.modx/config.ini';
+        $this->path = $this->getConfigPath() . 'config.ini';
         if (empty($items)) {
             $this->load($this->path);
         } else {
@@ -25,6 +25,7 @@ class Instance extends Base
     public function save()
     {
         $content = $this->formatConfigurationData();
+        $this->makeSureConfigPathExists();
 
         return (file_put_contents($this->path, $content) !== false);
     }

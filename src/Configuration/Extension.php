@@ -9,7 +9,7 @@ class Extension extends Base
 
     public function __construct(array $items = array())
     {
-        $this->path = getenv('HOME') . '/.modx/extraCommands.php';
+        $this->path = $this->getConfigPath() . 'extraCommands.php';
         if (empty($items)) {
             $this->load($this->path);
         } else {
@@ -46,6 +46,7 @@ class Extension extends Base
     public function save()
     {
         $content = $this->formatData();
+        $this->makeSureConfigPathExists();
 
         return file_put_contents($this->path, $content) !== false;
     }

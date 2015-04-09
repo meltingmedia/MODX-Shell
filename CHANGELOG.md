@@ -5,6 +5,7 @@ Changes for MODX Shell.
 
 ## 0.0.3-dev ()
 
+* Make sure `$HOME/.modx/` folder exists before trying to save a configuration in it
 * `CommandRegistrar` no more registers "deprecated commands" back, if found
 * Added `package:provider:add` to easily add a package provider (from a known list)
 * Added `user:resetpassword` command to reset a user password
