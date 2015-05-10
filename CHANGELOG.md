@@ -5,6 +5,7 @@ Changes for MODX Shell.
 
 ## 0.0.3-dev ()
 
+* Added `require` command to install packages
 * Added quick commands to create/remove system events (`system:events:create` & `system:events:delete`)
 * First step on allowing "excluded" commands
 * Added `package:upgradeable` to list packages with available upgrades
