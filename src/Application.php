@@ -332,4 +332,19 @@ class Application extends BaseApp
 
         return $this->modx->getService($lower, $name, $path, $params);
     }
+
+    /**
+     * List command classes to be "hidden"
+     *
+     * @TODO: implement storage (CRUD)
+     *
+     * @return array
+     */
+    public function getExcludedCommands()
+    {
+        return array(
+            'MODX\Shell\Command\Download',
+            'MODX\Shell\Command\Install',
+        );
+    }
 }

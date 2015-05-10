@@ -423,6 +423,11 @@ abstract class BaseCmd extends Command
      */
     public function isEnabled()
     {
+        $excluded = $this->getApplication()->getExcludedCommands();
+        if (!empty($excluded) && in_array(get_called_class(), $excluded)) {
+            return false;
+        }
+
         if ($this::MODX) {
             // Handle commands requiring a modX instance
             if (!$this->getMODX()) {
