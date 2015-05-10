@@ -5,6 +5,7 @@ Changes for MODX Shell.
 
 ## 0.0.3-dev ()
 
+* Added quick commands to create/remove system events (`system:events:create` & `system:events:delete`)
 * First step on allowing "excluded" commands
 * Added `package:upgradeable` to list packages with available upgrades
 * Make sure `$HOME/.modx/` folder exists before trying to save a configuration in it
