@@ -91,19 +91,21 @@ class Application extends BaseApp
     protected function handleInstanceAsArgument()
     {
         $app = $this;
-        array_filter($_SERVER['argv'], function($value) use ($app) {
-            if (strpos($value, '-s') === 0) {
-                $site = str_replace('-s', '', $value);
-                $dir = $app->instances->getConfig($site, 'base_path');
-                if ($dir) {
-                    chdir($dir);
+        if (isset($_SERVER['argv'])) {
+            array_filter($_SERVER['argv'], function($value) use ($app) {
+                if (strpos($value, '-s') === 0) {
+                    $site = str_replace('-s', '', $value);
+                    $dir = $app->instances->getConfig($site, 'base_path');
+                    if ($dir) {
+                        chdir($dir);
+                    }
+
+                    return false;
                 }
 
-                return false;
-            }
-
-            return true;
-        });
+                return true;
+            });
+        }
     }
 
     /**
@@ -235,11 +237,13 @@ class Application extends BaseApp
      */
     protected function loadMODX($config)
     {
-        if (!$config || !file_exists($config)) {
-            return false;
-        }
+        if (!defined('MODX_CORE_PATH')) {
+            if (!$config || !file_exists($config)) {
+                return false;
+            }
 
-        require_once $config;
+            require_once $config;
+        }
         $loader = MODX_CORE_PATH . 'vendor/autoload.php';
         if (file_exists($loader)) {
             require_once $loader;
