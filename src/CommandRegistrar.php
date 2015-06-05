@@ -18,6 +18,7 @@ abstract class CommandRegistrar
      */
     protected static $reflection = null;
     protected static $unregistered = array();
+    protected static $commandsFolder = 'Command';
 
     /**
      * Process the command registration
@@ -34,13 +35,13 @@ abstract class CommandRegistrar
         self::$io->write('Editing extra commands for <info>'.self::getNS().'</info>...');
 
         // First, un-register "deprecated" commands, if any
-        self::unRegister($config);
+        static::unRegister($config);
 
         // Iterate the Command folder, looking for command classes
         self::$io->write("\n".'  - looking for commands to register...');
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach (self::listCommands() as $file) {
-            $className = self::getCommandClass($file);
+        foreach (static::listCommands() as $file) {
+            $className = static::getCommandClass($file);
             if (!in_array($className, self::$unregistered)) {
                 $config->set($className);
                 self::$io->write("    Added   <info>{$className}</info>");
@@ -59,7 +60,7 @@ abstract class CommandRegistrar
      */
     public static function unRegister($config)
     {
-        $deprecated = self::getRootPath() .'/deprecated.php';
+        $deprecated = static::getRootPath() .'/deprecated.php';
         if (file_exists($deprecated)) {
             self::$io->write("\n".'  - looking for commands to remove...');
             $deprecated = include $deprecated;
@@ -78,7 +79,7 @@ abstract class CommandRegistrar
      */
     public static function listCommands()
     {
-        $basePath = self::getRootPath() . '/Command';
+        $basePath = static::getRootPath() . '/' . static::$commandsFolder;
 
         $finder = new \Symfony\Component\Finder\Finder();
         $finder->files()
@@ -101,7 +102,7 @@ abstract class CommandRegistrar
         $name = rtrim($file->getRelativePathname(), '.php');
         $name = str_replace('/', '\\', $name);
 
-        return self::getNS() . '\\Command\\' . $name;
+        return static::getNS() . '\\'. static::$commandsFolder .'\\' . $name;
     }
 
     /**
@@ -111,7 +112,7 @@ abstract class CommandRegistrar
      */
     protected static function getNS()
     {
-        return self::getReflection()->getNamespaceName();
+        return static::getReflection()->getNamespaceName();
     }
 
     /**
@@ -135,6 +136,6 @@ abstract class CommandRegistrar
      */
     protected static function getRootPath()
     {
-        return dirname(self::getReflection()->getFileName());
+        return dirname(static::getReflection()->getFileName());
     }
 }
