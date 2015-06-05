@@ -2,9 +2,6 @@
     "repositories": [{
         "type": "composer",
         "url": "https://composer.melting-media.com"
-    },{
-        "type": "vcs",
-        "url": "https://github.com/meltingmedia/MODX-Package-Installer"
     }],
     "name": "MODX/Shell",
     "description": "MODX CLI",
@@ -20,9 +17,9 @@
     ],
     "require": {
         "melting/modx/package": "0.2.*",
-        "symfony/console": "2.7.*@dev",
-        "symfony/process": "2.7.*@dev",
-        "symfony/finder": "2.7.*@dev"
+        "symfony/console": "2.7.*",
+        "symfony/process": "2.7.*",
+        "symfony/finder": "2.7.*"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5"
