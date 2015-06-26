@@ -77,7 +77,7 @@ class Extension extends Base
             $path = $this->path;
         }
         if (file_exists($path)) {
-            $this->items = include_once $path;
+            $this->items = include $path;
         }
     }
 }
