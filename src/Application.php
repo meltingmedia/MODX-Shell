@@ -248,6 +248,7 @@ class Application extends BaseApp
                 // Get current path
                 $coreConfig = $this->getCwd() . 'config.core.php';
             }
+            $coreConfig = realpath($coreConfig);
             if ($coreConfig && file_exists($coreConfig)) {
                 $this->modx = $this->loadMODX($coreConfig);
             }
