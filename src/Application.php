@@ -27,7 +27,7 @@ class Application extends BaseApp
     {
         $this->instances = new Configuration\Instance();
         // Change the "context" if executing the command on a specific instance
-        $this->handleInstanceAsArgument();
+        $this->handleForcedInstance();
         $this->extensions = new Configuration\Extension();
         $this->components = new Configuration\Component($this);
         parent::__construct('MODX Shell', file_get_contents(dirname(__DIR__) . '/VERSION'));
@@ -88,17 +88,44 @@ class Application extends BaseApp
     /**
      * Adds the ability to run a command on an instance without being in its folders/path
      */
-    protected function handleInstanceAsArgument()
+    protected function handleForcedInstance()
+    {
+        $app = $this;
+        $instance = $this->checkInstanceAsArgument($this->getDefaultInstance());
+
+        if ($instance) {
+            //echo 'Instance used is '. $instance . "\n";
+            $dir = $app->instances->getConfig($instance, 'base_path');
+            if ($dir) {
+                chdir($dir);
+            }
+        }
+    }
+
+    /**
+     * Get the configured default instance, if any
+     *
+     * @return null|string
+     */
+    protected function getDefaultInstance()
+    {
+        return $this->instances->getConfig('__default__', 'class');
+    }
+
+    /**
+     * Check if any instance name has been given from the CLI
+     *
+     * @param string|null $instance
+     *
+     * @return string|null
+     */
+    protected function checkInstanceAsArgument($instance)
     {
         $app = $this;
         if (isset($_SERVER['argv'])) {
-            array_filter($_SERVER['argv'], function($value) use ($app) {
+            array_filter($_SERVER['argv'], function ($value) use ($app, &$instance) {
                 if (strpos($value, '-s') === 0) {
-                    $site = str_replace('-s', '', $value);
-                    $dir = $app->instances->getConfig($site, 'base_path');
-                    if ($dir) {
-                        chdir($dir);
-                    }
+                    $instance = str_replace('-s', '', $value);
 
                     return false;
                 }
@@ -106,6 +133,8 @@ class Application extends BaseApp
                 return true;
             });
         }
+
+        return $instance;
     }
 
     /**

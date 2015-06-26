@@ -28,15 +28,20 @@ class GetList extends BaseCmd
         $current = $this->getApplication()->instances->current();
 
         foreach ($config as $name => $data) {
+            if ($name === '__default__') {
+                // Default instance
+                continue;
+            }
             $version = '<error>Unknown</error>';
             $color = '';
-            if (isset($data['core_path'])) {
-                $version = $this->getRemoteMODXVersion($data['core_path']);
-                if ($name === $current) {
-                    $color = 'info';
-                }
+
+            if ($name === $current) {
+                $color = 'info';
             } elseif (!file_exists($data['base_path']) || !file_exists($data['base_path'] . 'config.core.php')) {
                 $color = 'error';
+            }
+            if (isset($data['core_path'])) {
+                $version = $this->getRemoteMODXVersion($data['core_path']);
             }
 
             $row = array(

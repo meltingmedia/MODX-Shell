@@ -73,6 +73,38 @@ class Instance extends Base
         if (file_exists($path)) {
             $this->items = parse_ini_file($path, true);
         }
+
+        //echo print_r($this->items, true);
+    }
+
+    /**
+     * Get the confgiured default instance name, if any
+     *
+     * @return null|string
+     */
+    public function getDefaultInstance()
+    {
+        return $this->getConfig('__default__', 'class');
+    }
+
+    /**
+     * Set the given instance name as the default instance
+     *
+     * @param string $name
+     */
+    public function setDefaultInstance($name)
+    {
+        $this->set('__default__', array(
+            'class' => $name,
+        ));
+    }
+
+    /**
+     * Remove any configured default instance
+     */
+    public function removeDefaultInstance()
+    {
+        $this->remove('__default__');
     }
 
     /**
