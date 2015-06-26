@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3636ea826dbce6f96f10ad9cb13259c6",
+    "hash": "c43a9dcb64cf5de50313daed5258fb7b",
     "packages": [
         {
             "name": "melting/modx/installer",
@@ -12,9 +12,14 @@
             "source": {
                 "type": "git",
                 "url": "git@git.melting-media.com:composer/modx-installer.git",
-                "reference": "43e413fb3de167c15856ba2bdcd23fe46939dbe4"
+                "reference": "8952db8220497689809e9052663cfada65138e00"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.0.2-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Melting\\MODX\\Installer\\": "src/"
@@ -35,7 +40,7 @@
             "keywords": [
                 "MODX"
             ],
-            "time": "2015-06-26 12:59:25"
+            "time": "2015-06-26 21:33:39"
         },
         {
             "name": "melting/modx/package",
