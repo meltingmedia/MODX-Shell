@@ -27,8 +27,9 @@ class Listen extends BaseCmd
         $process = new Process($cmd);
         $process->setTimeout(0);
         $me = $this;
-        $process->run(function($type, $buffer) use ($me) {
-            $me->output->write($me->formatter->process($buffer));
+        $output = $this->output;
+        $process->run(function ($type, $buffer) use ($output, $me) {
+            $output->write($me->formatter->process($buffer));
         });
     }
 }
