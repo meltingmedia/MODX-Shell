@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 class Rename extends BaseCmd
 {
     protected $name = 'config:rename';
-    protected $description = 'Edit a modx installation configuration';
+    protected $description = 'Rename an instance';
 
     protected function getArguments()
     {
@@ -14,12 +14,12 @@ class Rename extends BaseCmd
             array(
                 'old-name',
                 InputArgument::REQUIRED,
-                'Your previous (current) instance name'
+                'The current instance name you want to rename'
             ),
             array(
                 'new-name',
                 InputArgument::REQUIRED,
-                'Your new instance name',
+                'Your new desired instance name',
             ),
         );
     }

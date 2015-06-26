@@ -8,6 +8,7 @@ Changes for MODX Shell.
 * Added ability to define a default instance
 * Added ability to rename an instance
 * Should have fixed an issue in `system:log:listen` trying to access a protected attribute
+* Fixed issue when trying to load extra commands configuration multiple times in the same application instance/lifetime
 * Make use of `static` instead of `self` in `CommandRegistrar` to allow methods overrides
 * Added `require` command to install packages
 * Added quick commands to create/remove system events (`system:events:create` & `system:events:delete`)
