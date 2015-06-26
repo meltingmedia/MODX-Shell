@@ -17,6 +17,7 @@
     ],
     "require": {
         "melting/modx/package": "0.2.*",
+        "melting/modx/installer": "dev-master",
         "symfony/console": "2.7.*",
         "symfony/process": "2.7.*",
         "symfony/finder": "2.7.*"

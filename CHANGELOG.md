@@ -5,6 +5,7 @@ Changes for MODX Shell.
 
 ## 0.0.3-dev ()
 
+* Added command to download official releases
 * Added ability to "exclude" (hide) some commands
 * Added ability to define a default instance
 * Added ability to rename an instance
