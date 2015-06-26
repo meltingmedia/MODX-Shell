@@ -9,7 +9,9 @@ class Extension extends Base
 
     public function __construct(array $items = array())
     {
-        $this->path = $this->getConfigPath() . 'extraCommands.php';
+        if (!$this->path) {
+            $this->path = $this->getConfigPath() . 'extraCommands.php';
+        }
         if (empty($items)) {
             $this->load($this->path);
         } else {

@@ -137,13 +137,13 @@ abstract class BaseCmd extends Command
     protected function init()
     {
         // @TODO: remove, duplicate of isEnabled ?
-        if ($this::MODX) {
-            $loaded = $this->getMODX();
-            if (!$loaded) {
-                $this->error('Sorry, seems like MODX is not accessible here...');
-                return false;
-            }
-        };
+//        if ($this::MODX) {
+//            $loaded = $this->getMODX();
+//            if (!$loaded) {
+//                $this->error('Sorry, seems like MODX is not accessible here...');
+//                return false;
+//            }
+//        };
 
         return true;
     }

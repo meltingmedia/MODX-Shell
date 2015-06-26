@@ -14,9 +14,22 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 class Application extends BaseApp
 {
+    /**
+     * @var Configuration\Instance
+     */
     public $instances;
+    /**
+     * @var Configuration\Extension
+     */
     public $extensions;
+    /**
+     * @var Configuration\Component
+     */
     public $components;
+    /**
+     * @var Configuration\ExcludedCommands
+     */
+    public $excludedCommands;
 
     /**
      * @var \modX
@@ -29,6 +42,7 @@ class Application extends BaseApp
         // Change the "context" if executing the command on a specific instance
         $this->handleForcedInstance();
         $this->extensions = new Configuration\Extension();
+        $this->excludedCommands = new Configuration\ExcludedCommands();
         $this->components = new Configuration\Component($this);
         parent::__construct('MODX Shell', file_get_contents(dirname(__DIR__) . '/VERSION'));
     }
@@ -369,15 +383,10 @@ class Application extends BaseApp
     /**
      * List command classes to be "hidden"
      *
-     * @TODO: implement storage (CRUD)
-     *
      * @return array
      */
     public function getExcludedCommands()
     {
-        return array(
-            'MODX\Shell\Command\Download',
-            'MODX\Shell\Command\Install',
-        );
+        return $this->excludedCommands->getAll();
     }
 }
