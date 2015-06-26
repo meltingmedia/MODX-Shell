@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c43a9dcb64cf5de50313daed5258fb7b",
+    "hash": "1d01d0ee4ae39cb6c4aeeded0fe3fbe1",
     "packages": [
         {
             "name": "melting/modx/installer",

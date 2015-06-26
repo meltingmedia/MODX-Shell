@@ -3,7 +3,7 @@
         "type": "composer",
         "url": "https://composer.melting-media.com"
     }],
-    "name": "MODX/Shell",
+    "name": "modx/shell",
     "description": "MODX CLI",
     "keywords": ["MODX", "shell", "sh"],
     "license": "MIT",
