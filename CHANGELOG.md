@@ -3,7 +3,7 @@
 Changes for MODX Shell.
 
 
-## 0.0.3-dev ()
+## [unreleased]
 
 * Added command to download official releases
 * Added ability to "exclude" (hide) some commands
@@ -28,7 +28,7 @@ Changes for MODX Shell.
 * Fixed issues on PHP 5.3
 
 
-## 0.0.2-dev (2015/02/21)
+## [0.0.2-dev] 2015/02/21
 
 * More generally, started a huge code cleanup (some more coming before v0.1.0)
 * Added ability to require a minimum Revolution version for commands
@@ -52,3 +52,7 @@ Changes for MODX Shell.
 ## 0.0.1-dev (2015/02/14)
 
 * Open Sourcing the repository/PoC
+
+
+[unreleased]: https://github.com/meltingmedia/MODX-Shell/compare/v0.0.2...HEAD
+[0.0.2-dev]: https://github.com/meltingmedia/MODX-Shell/compare/v0.0.1...v0.0.2
