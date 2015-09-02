@@ -18,16 +18,21 @@ class Upgradeable extends BaseCmd
 
     protected function process()
     {
-        $c = $this->modx->newQuery('transport.modTransportPackage');
-        $c->where(array(
-            'installed:!=' => null,
-            'provider:>' => 0,
-        ));
+//        $c = $this->modx->newQuery('transport.modTransportPackage');
+//        $c->where(array(
+//            'installed:!=' => null,
+//            'provider:>' => 0,
+//        ));
 
         $upgrades = array();
-        $collection = $this->modx->getCollection('transport.modTransportPackage', $c);
+        //$collection = $this->modx->getCollection('transport.modTransportPackage', $c);
+        $list = $this->modx->call('transport.modTransportPackage', 'listPackages', array(&$this->modx, 1));
+        $collection = $list['collection'];
         /** @var \modTransportPackage $package */
         foreach ($collection as $package) {
+            if ($package->provider === 0) {
+                continue;
+            }
             if ($this->isUpgradeable($package)) {
                 $upgrades[] = $package->package_name;
             }
