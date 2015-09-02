@@ -4,44 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d01d0ee4ae39cb6c4aeeded0fe3fbe1",
+    "hash": "efe7c76ca4b6eff6bd8633e5d181b13a",
     "packages": [
-        {
-            "name": "melting/modx/installer",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@git.melting-media.com:composer/modx-installer.git",
-                "reference": "8952db8220497689809e9052663cfada65138e00"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.0.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Melting\\MODX\\Installer\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Romain Tripault",
-                    "email": "romain@melting-media.com",
-                    "homepage": "http://melting-media.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "MODX Revolution installer helper",
-            "keywords": [
-                "MODX"
-            ],
-            "time": "2015-06-26 21:33:39"
-        },
         {
             "name": "melting/modx/package",
             "version": "v0.2.1",
@@ -100,12 +64,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "de55b131091dd0dad1c3b25f3633ae00e881e33c"
+                "reference": "8dee01fd5ecb3da51d1995246dc7077377011c98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/de55b131091dd0dad1c3b25f3633ae00e881e33c",
-                "reference": "de55b131091dd0dad1c3b25f3633ae00e881e33c",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/8dee01fd5ecb3da51d1995246dc7077377011c98",
+                "reference": "8dee01fd5ecb3da51d1995246dc7077377011c98",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +113,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-25 12:52:11"
+            "time": "2015-08-31 16:44:53"
         },
         {
             "name": "symfony/finder",
@@ -157,12 +121,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "f71c7584e940ccdfb56af376b673dc7b4e0750f1"
+                "reference": "fff4b0c362640a0ab7355e2647b3d461608e9065"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/f71c7584e940ccdfb56af376b673dc7b4e0750f1",
-                "reference": "f71c7584e940ccdfb56af376b673dc7b4e0750f1",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/fff4b0c362640a0ab7355e2647b3d461608e9065",
+                "reference": "fff4b0c362640a0ab7355e2647b3d461608e9065",
                 "shasum": ""
             },
             "require": {
@@ -198,7 +162,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-18 13:03:50"
+            "time": "2015-08-26 17:56:37"
         },
         {
             "name": "symfony/process",
@@ -206,12 +170,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "5c7f4ad0d6b3c7f79ccbfefbe08ac0b36308c734"
+                "reference": "f7b3f73f70a7f8f49a1c838dc3debbf054732d8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/5c7f4ad0d6b3c7f79ccbfefbe08ac0b36308c734",
-                "reference": "5c7f4ad0d6b3c7f79ccbfefbe08ac0b36308c734",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/f7b3f73f70a7f8f49a1c838dc3debbf054732d8e",
+                "reference": "f7b3f73f70a7f8f49a1c838dc3debbf054732d8e",
                 "shasum": ""
             },
             "require": {
@@ -247,15 +211,13 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-18 19:21:56"
+            "time": "2015-08-27 06:45:45"
         }
     ],
     "packages-dev": null,
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "melting/modx/installer": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

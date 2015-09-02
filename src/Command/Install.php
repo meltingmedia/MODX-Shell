@@ -11,22 +11,6 @@ class Install extends BaseCmd
     protected $name = 'install';
     protected $description = 'Install MODX here';
 
-    protected function getArguments()
-    {
-        return array(
-            array(
-                'source',
-                InputArgument::REQUIRED,
-                'The absolute path to the MODX Revolution source, either a git repository folder or a zip file.'
-            ),
-            array(
-                'config',
-                InputArgument::OPTIONAL,
-                'The absolute path to a configuration file.'
-            ),
-        );
-    }
-
     protected function process()
     {
         if (!$this->getApplication()->instances->getDefaultInstance() && $this->getMODX()) {
@@ -50,7 +34,7 @@ class Install extends BaseCmd
         $config = $this->argument('config');
         if ($config) {
             if (!file_exists($config)) {
-                return $this->error("{$config} does not appear to be a valid confgiuration file");
+                return $this->error("{$config} does not appear to be a valid configuration file");
             }
             $config = $this->readConfigFromfile($config);
         } else {
@@ -77,43 +61,29 @@ class Install extends BaseCmd
         return $this->line("Seems like an error occurred while trying to install MODX Revolution : <error>{$modx}</error>");
     }
 
+    /**
+     * Read the configuration options from the given file
+     *
+     * @param string $path - The absolute path to the configuration file
+     *
+     * @return array
+     */
     protected function readConfigFromFile($path)
     {
+        // @TODO
         $config = array();
 
         return $config;
     }
 
-    protected function getCustomFolders(array $config, $source)
-    {
-        // Folders mapping
-        $toCheck = array(
-            // folder name in source => config key
-            'manager' => 'context_mgr_path',
-            'core' => 'core_path',
-            'assets' => 'assets_path',
-            'connectors' => 'context_connectors_path',
-        );
-        // Handle folders to move in custom locations
-        $folders = array();
-        foreach ($toCheck as $folder => $configKey) {
-            $inSource = realpath("{$source}{$folder}");
-            if (!file_exists($inSource) || !isset($configKey[$configKey])) {
-                // Source does not have the folder or not configuration option
-                continue;
-            }
-            // Now check if folder value in the config is different than the source
-            $inConfig = realpath($config[$configKey]);
-            if ($inConfig !== $inSource) {
-                $folders[$folder] = $inConfig;
-            }
-        }
-
-        return $folders;
-    }
-
+    /**
+     * Ask the user for the configuration details, interactively
+     *
+     * @return array
+     */
     protected function buildConfigInteractively()
     {
+        // @TODO
         // DB mysql|sqlsrv
         $dbType = 'mysql';
         // DB host (default to localhost)
@@ -172,6 +142,61 @@ class Install extends BaseCmd
             'inplace' => '1',
             'unpacked' => '0',
             'remove_setup_directory' => '1',
+        );
+    }
+
+    /**
+     * Read the given configuration array to find if some folders have been moved in other places than their default
+     *
+     * @param array $config - The configuration data to install Revo
+     * @param string $source - The source folder to install Revo from (either a git repository or extracted official archive)
+     *
+     * @return array - An array of custom folders, if any (else an empty array)
+     */
+    protected function getCustomFolders(array $config, $source)
+    {
+        // Folders mapping
+        $toCheck = array(
+            // folder name in source => config key
+            'manager' => 'context_mgr_path',
+            'core' => 'core_path',
+            'assets' => 'assets_path',
+            'connectors' => 'context_connectors_path',
+        );
+        // Handle folders to move in custom locations
+        $folders = array();
+        foreach ($toCheck as $folder => $configKey) {
+            $inSource = realpath("{$source}{$folder}");
+            if (!file_exists($inSource) || !isset($configKey[$configKey])) {
+                // Source does not have the folder or not configuration option
+                continue;
+            }
+            // Now check if folder value in the config is different than the source
+            $inConfig = realpath($config[$configKey]);
+            if ($inConfig !== $inSource) {
+                $folders[$folder] = $inConfig;
+            }
+        }
+
+        return $folders;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getArguments()
+    {
+        return array(
+            array(
+                'source',
+                InputArgument::REQUIRED,
+                'The absolute path to the MODX Revolution source, either a git repository folder or a zip file.'
+            ),
+            array(
+                'config',
+                InputArgument::OPTIONAL,
+                'The absolute path to a configuration file.'
+            ),
         );
     }
 }

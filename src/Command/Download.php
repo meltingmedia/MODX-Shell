@@ -3,46 +3,13 @@
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class Download extends BaseCmd
+/**
+ * A command to download a MODX Revolution release
+ */
+abstract class Download extends BaseCmd
 {
     protected $name = 'download';
     protected $description = 'Download a MODX Revolution release';
-
-    protected function getArguments()
-    {
-        return array(
-            array(
-                'version',
-                InputArgument::OPTIONAL,
-                'The version you want to download',
-                'latest'
-            ),
-            array(
-                'path',
-                InputArgument::OPTIONAL,
-                'The path to download the file to',
-                getenv('HOME') . '/.modx/releases/'
-            ),
-        );
-    }
-
-    protected function getOptions()
-    {
-        return array(
-            array(
-                'advanced',
-                'a',
-                InputOption::VALUE_NONE,
-                'Whether or not you want an advanced release'
-            ),
-            array(
-                'sdk',
-                'k',
-                InputOption::VALUE_NONE,
-                'Whether or not you want the SDK version'
-            ),
-        );
-    }
 
     protected function process()
     {
@@ -75,6 +42,14 @@ class Download extends BaseCmd
         $this->comment("Done");
     }
 
+    /**
+     * Download the given file (archive) to the given destination
+     *
+     * @param string $url
+     * @param string $target
+     *
+     * @return void
+     */
     protected function download($url, $target)
     {
         $ch = curl_init();
@@ -91,6 +66,11 @@ class Download extends BaseCmd
         fclose($file);
     }
 
+    /**
+     * Build the expected URL for the archive, to download from
+     *
+     * @return string
+     */
     protected function buildURL()
     {
         $version = $this->argument('version');
@@ -102,6 +82,11 @@ class Download extends BaseCmd
         return "http://modx.com/download/direct/{$file}";
     }
 
+    /**
+     * Compute the expected archive file name
+     *
+     * @return string
+     */
     protected function buildFileName()
     {
         $version = $this->argument('version');
@@ -118,5 +103,47 @@ class Download extends BaseCmd
         }
 
         return $version .'.zip';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getArguments()
+    {
+        return array(
+            array(
+                'version',
+                InputArgument::OPTIONAL,
+                'The version you want to download',
+                'latest'
+            ),
+            array(
+                'path',
+                InputArgument::OPTIONAL,
+                'The path to download the file to',
+                getenv('HOME') . '/.modx/releases/'
+            ),
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getOptions()
+    {
+        return array(
+            array(
+                'advanced',
+                'a',
+                InputOption::VALUE_NONE,
+                'Whether or not you want an advanced release'
+            ),
+            array(
+                'sdk',
+                'k',
+                InputOption::VALUE_NONE,
+                'Whether or not you want the SDK version'
+            ),
+        );
     }
 }
