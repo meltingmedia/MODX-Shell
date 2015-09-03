@@ -104,6 +104,9 @@ class Application extends BaseApp
      */
     protected function handleForcedInstance()
     {
+        if ($this->instances->current()) {
+            return;
+        }
         $app = $this;
         $instance = $this->checkInstanceAsArgument($this->getDefaultInstance());
 
