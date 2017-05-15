@@ -116,12 +116,10 @@ class Instance extends Base
      */
     public function findFormPath($path)
     {
-        if (substr($path, -1) !== '/') {
-            $path .= '/';
-        }
+        $path = realpath($path);
         foreach ($this->items as $name => $data) {
             if (array_key_exists('base_path', $data)) {
-                $instancePath = $data['base_path'];
+                $instancePath = realpath($data['base_path']);
                 if (substr($path, 0, strlen($instancePath)) === $instancePath) {
                     return $name;
                 }

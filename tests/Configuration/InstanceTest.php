@@ -25,9 +25,9 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Instance($items);
 
-        $this->assertEquals('InstanceName', $config->findFormPath('/some/fake/path/'), 'We are able to find an instance name from a given path.');
-        $this->assertEquals('InstanceName', $config->findFormPath('/some/fake/path'), 'We are able to find an instance name from a given path minus its trailing slash.');
-        $this->assertEquals('InstanceName', $config->findFormPath('/some/fake/path/sub/folder'), 'We are able to find an instance name from a given path nested in base_path.');
+        $this->assertEquals('InstanceName', $config->findFormPath('./src/'), 'We are able to find an instance name from a given path.');
+        $this->assertEquals('InstanceName', $config->findFormPath('./src'), 'We are able to find an instance name from a given path minus its trailing slash.');
+        $this->assertEquals('InstanceName', $config->findFormPath('./src/Configuration/'), 'We are able to find an instance name from a given path nested in base_path.');
         $this->assertNull($config->findFormPath('/not/registered/path/'), 'Searching for a not registered path should return null');
 
         $this->assertEquals('CurrentInstanceName', $config->current(), 'We can find the current instance using current() method');
@@ -77,7 +77,7 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'InstanceName' => array(
-                        'base_path' => '/some/fake/path/',
+                        'base_path' => './src/',
                     ),
                     'CurrentInstanceName' => array(
                         'base_path' => getcwd(),
