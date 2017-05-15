@@ -12,7 +12,7 @@ A CLI application wrapper for MODX Revolution.
 
 ## Requirements
 
-* PHP CLI 5.3.9+
+* PHP CLI 5.6+
 * Composer
 
 
