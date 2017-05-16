@@ -24,7 +24,7 @@ image: dock.melt.im/docker/php:7.1-alpine-dev
         - composer --version
     script:
         - composer config -g gitlab-domains git.melting-media.com
-        - composer install --no-interaction
+        - composer install --no-interaction --no-progress
         - composer outdated
         - vendor/bin/phpunit --version
         - vendor/bin/phpunit --coverage-text --colors=never
