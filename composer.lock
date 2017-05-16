@@ -1098,12 +1098,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "a0f5f36efb104c23d127c02eea69208f5788c573"
+                "reference": "86ba64b90d6da250a75a734bf22db25232b7304c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/a0f5f36efb104c23d127c02eea69208f5788c573",
-                "reference": "a0f5f36efb104c23d127c02eea69208f5788c573",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/86ba64b90d6da250a75a734bf22db25232b7304c",
+                "reference": "86ba64b90d6da250a75a734bf22db25232b7304c",
                 "shasum": ""
             },
             "require": {
@@ -1142,7 +1142,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-05-15T16:35:51+00:00"
+            "time": "2017-05-16T12:08:37+00:00"
         },
         {
             "name": "sebastian/environment",

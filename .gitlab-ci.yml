@@ -51,7 +51,7 @@ composer:
     stage: deploy
     only: *only
     script:
-        - curl --silent -X POST -F token=${COMPOSER} -F "ref=master" -F "variables[NS]=modx/shell" ${TRIGGER}
+        - curl --silent -X POST -F token=${TRIGGER_TOKEN} -F "ref=master" -F "variables[NS]=modx/shell" ${TRIGGER}
 
 
 ## Mirror to Github repository
@@ -60,10 +60,8 @@ mirror:
     stage: deploy
     only: *only
     services: []
-    script:
+    before_script:
         - apk --no-cache add git
         - git --version
-        - git config --global github.user rtripault
-        - git config --global github.token $GITHUB_OAUTH_TOKEN
-        - git remote add github https://github.com/meltingmedia/MODX-Shell.git
-        - git fetch -p github
+    script:
+        - git push https://$GITHUB_OAUTH_TOKEN@github.com/meltingmedia/MODX-Shell.git master
