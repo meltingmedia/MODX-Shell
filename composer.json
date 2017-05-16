@@ -39,5 +39,6 @@
         "branch-alias": {
             "dev-master": "0.0.3-dev"
         }
-    }
+    },
+    "non-feature-branches": ["_old", "generators"]
 }

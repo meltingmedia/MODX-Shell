@@ -64,4 +64,4 @@ mirror:
         - apk --no-cache add git
         - git --version
     script:
-        - git push https://$GITHUB_OAUTH_TOKEN@github.com/meltingmedia/MODX-Shell.git master
+        - git push https://$GITHUB_OAUTH_TOKEN@github.com/meltingmedia/MODX-Shell.git master --tags
